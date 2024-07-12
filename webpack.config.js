@@ -9,6 +9,7 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, "build"),
     },
+    mode: 'development',
     module: {
         rules: [
             {
@@ -33,8 +34,8 @@ module.exports = {
     ],
     devServer: {
         static: {
-            publicPath: '/build/',
-            directory: path.resolve(__dirname, 'build'),
+            publicPath: '/',
+            directory: path.resolve(__dirname),
         },
         port: 8080,
         proxy: [
