@@ -2,10 +2,8 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const path = require('path');
-const pgp = require('pg-promise')(/* options */);
-const db = pgp(
-  'postgresql://postgres.gjitkjeyoojbanjtglag:touchy-withdrew-wear@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
-);
+
+const testMiddleware = require('./controllers.js');
 
 app.use(express.static(path.join(__dirname, '../build')));
 
@@ -13,6 +11,12 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '../build/index.html'))
 ); // Serve from the current directory
 
+//test routing to see if db query middleware works
+app.get('/test', testMiddleware.sqlGetTest, (req, res) => res.status(250).send(res.locals.result));
+
+app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) => res.sendStatus(250));
+
+//unknown route handler
 app.use('*', (req, res) => res.sendStatus(404));
 
 // Global error handler
