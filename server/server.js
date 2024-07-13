@@ -3,7 +3,11 @@ const app = express();
 const PORT = 3000;
 const path = require('path');
 
-app.get('/', express.static(path.join(__dirname, '../build'))); // Serve from the current directory
+app.use(express.static(path.join(__dirname, '../build')))
+
+app.get('/', (req,res)=> res.sendFile(path.join(__dirname, '../build/index.html'))); // Serve from the current directory
+
+
 
 // Global error handler
 app.use((err, req, res, next) => {
