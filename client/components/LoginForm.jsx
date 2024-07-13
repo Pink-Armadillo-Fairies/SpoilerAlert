@@ -6,20 +6,33 @@ import '../../client/styles.css';
 
 
 const LoginForm= () => {
+    const [inputUsernameValue, setInputUsernameValue] = useState('');
+    const [inputPasswordValue, setInputPasswordValue] = useState('');
+
+    const handleUsernameChange = (event) => {
+      setInputUsernameValue(event.target.value);
+    }
+    const handlePasswordChange = (event) => {
+      setInputPasswordValue(event.target.value);
+    }
+
+    const handleLoginSubmit = () => {
+      alert(`Username: ${inputUsernameValue} Password: ${inputPasswordValue}`)
+    }
+
     return(
      <Container className="loginFormContainer">
-      
-      <Form className="loginBox">
+      <Form className="loginBox" onSubmit={handleLoginSubmit} >
       <p style={{fontFamily: "arial", fontSize: "20px"}}>Login</p>
         <Form.Group className="usernameInput" controlId="usernameInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
           <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Username</Form.Label>
-          <Form.Control type="email" value={"TBD"} onChange={"TBD"}/>
+          <Form.Control type="text" value={inputUsernameValue} onChange={handleUsernameChange}/>
         </Form.Group>
           <Form.Group className="passwordInput" controlId="passwordInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
             <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
-            <Form.Control type="password" value={"TBD"} onChange={"TBD"}/>
+            <Form.Control type="password" value={inputPasswordValue} onChange={handlePasswordChange} />
           </Form.Group> 
-          <Button className="loginButton" variant="login" type="submit" onPress={"TBD"}>Log In</Button>
+          <Button className="loginButton" variant="login" type="submit">Log In</Button>
           <div className="newUserLine" style={{display: "flex",  alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
             <p>New to Spoiler Alert?</p>
             <a href="/create-user" style={{marginLeft: "10px"}}>Create New User</a>
