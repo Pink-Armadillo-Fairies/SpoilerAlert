@@ -1,14 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './components/App.jsx'
-import { BrowserRouter as Router } from 'react-router-dom';
-import './styles.css';
+import { Provider } from 'react-redux';
+import App from './components/App.jsx';
 
-document.addEventListener('DOMContentLoaded', () => { 
-  const root = createRoot(document.querySelector('#root'))
-  root.render(
-    <Router>
-      <App />
-    </Router>
-  );
-})
+const container = document.getElementById('app');
+const root = createRoot(container);
+
+root.render(
+  <App />
+);
