@@ -1,7 +1,4 @@
-const pgp = require('pg-promise')(/* options */);
-const db = pgp(
-  'postgresql://postgres.gjitkjeyoojbanjtglag:touchy-withdrew-wear@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
-);
+const db = require('./db_config.js');
 
 const testMiddleware = {
   test: (req, res, next) => {

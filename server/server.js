@@ -4,7 +4,10 @@ const PORT = 3000;
 const path = require('path');
 
 const testMiddleware = require('./controllers.js');
-const users = require('./userController.js');
+const user = require('./userController.js');
+const show = require('./showController.js');
+const season = require('./seasonController.js');
+const episode = require('./episodeController.js');
 
 app.use(express.static(path.join(__dirname, '../build')));
 
@@ -24,11 +27,38 @@ app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) =>
 );
 
 // user routes
-app.get('/users', users.getUsers, (req, res) => {
+app.get('/users', user.getUsers, (req, res) => {
   return res.status(200).send(res.locals.result);
 });
 
-app.post('/users/', users.createUser, (req, res) => res.sendStatus(201));
+app.post('/users/', user.createUser, (req, res) => res.sendStatus(201));
+
+// show routes
+app.get('/shows', show.getShows, (req, res) => {
+  return res.status(200).send(res.locals.result);
+});
+
+app.get('/shows/:id', show.getShowSeasons, (req, res) => {
+  return res.status(200).send(res.locals.result);
+});
+
+app.post('/shows/', show.createShow, (req, res) => res.sendStatus(201));
+
+// season routes
+app.get('/seasons', season.getSeasons, (req, res) => {
+  return res.status(200).send(res.locals.result);
+});
+
+app.post('/seasons/', season.createSeason, (req, res) => res.sendStatus(201));
+
+// episode routes
+app.get('/episodes', episode.getEpisodes, (req, res) => {
+  return res.status(200).send(res.locals.result);
+});
+
+app.post('/episodes/', episode.createEpisode, (req, res) =>
+  res.sendStatus(201)
+);
 
 //unknown route handler
 app.use('*', (req, res) => res.sendStatus(404));

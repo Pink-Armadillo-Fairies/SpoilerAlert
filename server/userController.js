@@ -1,9 +1,6 @@
-const pgp = require('pg-promise')(/* options */);
-const db = pgp(
-  'postgresql://postgres.gjitkjeyoojbanjtglag:touchy-withdrew-wear@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
-);
+const db = require('./db_config.js');
 
-const users = {
+const user = {
   getUsers: async (req, res, next) => {
     try {
       const result = await db.any('select * from "users"');
@@ -11,8 +8,8 @@ const users = {
       return next();
     } catch (err) {
       const errObj = {
-        log: `sql query failed: ${err}`,
-        message: { err: 'sql query failed, check server log for details' },
+        log: `get users failed: ${err}`,
+        message: { err: 'get users failed, check server log for details' },
       };
       return next(errObj);
     }
@@ -25,7 +22,6 @@ const users = {
       const result = await db.none(
         `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`
       );
-      //   res.locals.result = result;
       return next();
     } catch (err) {
       const errObj = {
@@ -37,4 +33,4 @@ const users = {
   },
 };
 
-module.exports = users;
+module.exports = user;
