@@ -3,15 +3,10 @@ const db = pgp(
   'postgresql://postgres.gjitkjeyoojbanjtglag:touchy-withdrew-wear@aws-0-us-east-1.pooler.supabase.com:6543/postgres'
 );
 
-const testMiddleware = {
-  test: (req, res, next) => {
-    console.log('working');
-    return next();
-  },
-  sqlGetTest: async (req, res, next) => {
+const users = {
+  getUsers: async (req, res, next) => {
     try {
       const result = await db.any('select * from "users"');
-      console.log(result);
       res.locals.result = result;
       return next();
     } catch (err) {
@@ -22,21 +17,24 @@ const testMiddleware = {
       return next(errObj);
     }
   },
-  sqlPostTest: async (req, res, next) => {
+
+  createUser: async (req, res, next) => {
     try {
-      const username = req.params.username;
+      const username = req.body.username;
+      const password = req.body.password;
       const result = await db.none(
-        `INSERT INTO usernames (username) VALUES ('${username}')`
+        `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`
       );
+      //   res.locals.result = result;
       return next();
     } catch (err) {
       const errObj = {
-        log: `post to sql failed: ${err}`,
-        message: { err: 'post to sql failed, check server log for details' },
+        log: `create user failed: ${err}`,
+        message: { err: 'create user failed, check server log for details' },
       };
       return next(errObj);
     }
   },
 };
 
-module.exports = testMiddleware;
+module.exports = users;

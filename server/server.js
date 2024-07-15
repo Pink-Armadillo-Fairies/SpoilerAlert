@@ -4,17 +4,31 @@ const PORT = 3000;
 const path = require('path');
 
 const testMiddleware = require('./controllers.js');
+const users = require('./userController.js');
 
 app.use(express.static(path.join(__dirname, '../build')));
+
+app.use(express.json());
 
 app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '../build/index.html'))
 ); // Serve from the current directory
 
 //test routing to see if db query middleware works
-app.get('/test', testMiddleware.sqlGetTest, (req, res) => res.status(250).send(res.locals.result));
+app.get('/test', testMiddleware.sqlGetTest, (req, res) =>
+  res.status(250).send(res.locals.result)
+);
 
-app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) => res.sendStatus(250));
+app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) =>
+  res.sendStatus(250)
+);
+
+// user routes
+app.get('/users', users.getUsers, (req, res) => {
+  return res.status(200).send(res.locals.result);
+});
+
+app.post('/users/', users.createUser, (req, res) => res.sendStatus(201));
 
 //unknown route handler
 app.use('*', (req, res) => res.sendStatus(404));
