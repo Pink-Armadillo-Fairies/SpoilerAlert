@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ShowSelection from './components/ShowSelection.jsx';
 import LoginForm from './components/LoginForm.jsx';
+import MainPage from './components/MainPage.jsx';
 
 
 const router = createBrowserRouter(
@@ -14,8 +15,8 @@ const router = createBrowserRouter(
      element: <LoginForm />,
      children: [],
     }, 
-    {path: '/login',
-     element: <LoginForm />,
+    {path: '/mainpage',
+     element: <MainPage/>,
      children: [],
     }, 
   ])

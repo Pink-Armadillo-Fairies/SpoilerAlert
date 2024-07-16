@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Form, Container, Button } from 'react-bootstrap';
 import '../../client/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,6 +21,11 @@ const LoginForm= () => {
       alert(`Username: ${inputUsernameValue} Password: ${inputPasswordValue}`)
     }
 
+    const navigate = useNavigate();
+    const gotoMainPage = () => {
+    navigate('/mainpage');
+  };
+
     return(
      <Container className="loginFormContainer">
       <Form className="loginBox" onSubmit={handleLoginSubmit} >
@@ -32,7 +38,7 @@ const LoginForm= () => {
             <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
             <Form.Control type="password" value={inputPasswordValue} onChange={handlePasswordChange} />
           </Form.Group> 
-          <Button className="loginButton" variant="login" type="submit">Log In</Button>
+          <Button className="loginButton" variant="login" type="submit" onClick={gotoMainPage} >Log In</Button>
           <div className="newUserLine" style={{display: "flex",  alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
             <p>New to Spoiler Alert?</p>
             <a href="/create-user" style={{marginLeft: "10px"}}>Create New User</a>
