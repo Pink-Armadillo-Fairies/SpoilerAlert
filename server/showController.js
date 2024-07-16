@@ -1,4 +1,4 @@
-const db = require('./db_config.js');
+import db from './db_config.js';
 
 const show = {
   getShows: async (req, res, next) => {
@@ -37,7 +37,7 @@ const show = {
   createShow: async (req, res, next) => {
     try {
       const title = req.body.title;
-      const result = await db.none(
+      const result = await none(
         `INSERT INTO shows (title) VALUES ('${title}')`
       );
       return next();
@@ -51,4 +51,4 @@ const show = {
   },
 };
 
-module.exports = show;
+export default show;

@@ -2,6 +2,7 @@
   "name": "spoileralert",
   "version": "1.0.0",
   "description": "Don't spoil it for me!",
+  "type": "module",
   "main": "./client/main.js",
   "scripts": {
     "start": "webpack serve --open",

@@ -1,28 +1,29 @@
-const express = require('express');
+// import express, { static, json } from 'express';
+import express from 'express';
 const app = express();
 const PORT = 3000;
-const path = require('path');
+import { join } from 'path';
 
-const testMiddleware = require('./controllers.js');
-const user = require('./userController.js');
-const show = require('./showController.js');
-const season = require('./seasonController.js');
-const episode = require('./episodeController.js');
+import sqlTest from './controllers.js';
+import user from './userController.js';
+import show from './showController.js';
+import season from './seasonController.js';
+import episode from './episodeController.js';
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(join(express.__dirname, '../build')));
 
 app.use(express.json());
 
 app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, '../build/index.html'))
+  res.sendFile(join(express.__dirname, '../build/index.html'))
 ); // Serve from the current directory
 
 //test routing to see if db query middleware works
-app.get('/test', testMiddleware.sqlGetTest, (req, res) =>
+app.get('/test', sqlTest.sqlGetTest, (req, res) =>
   res.status(250).send(res.locals.result)
 );
 
-app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) =>
+app.post('/test/:username', sqlTest.sqlPostTest, (req, res) =>
   res.sendStatus(250)
 );
 

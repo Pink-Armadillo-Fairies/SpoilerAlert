@@ -1,4 +1,4 @@
-const db = require('./db_config.js');
+import db from './db_config.js';
 
 const episode = {
   getEpisodes: async (req, res, next) => {
@@ -20,7 +20,7 @@ const episode = {
       const number = req.body.number;
       const title = req.body.title;
       const seasonID = req.body.seasonID;
-      const result = await db.none(
+      await db.none(
         `INSERT INTO episodes (number, title, season) VALUES ('${number}', '${title}', '${seasonID}')`
       );
       return next();
@@ -34,4 +34,4 @@ const episode = {
   },
 };
 
-module.exports = episode;
+export default episode;

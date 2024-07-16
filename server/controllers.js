@@ -1,4 +1,4 @@
-const db = require('./db_config.js');
+import db from './db_config.js';
 
 const testMiddleware = {
   test: (req, res, next) => {
@@ -36,4 +36,4 @@ const testMiddleware = {
   },
 };
 
-module.exports = testMiddleware;
+export default testMiddleware;

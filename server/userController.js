@@ -1,4 +1,4 @@
-const db = require('./db_config.js');
+import db from './db_config.js';
 
 const user = {
   getUsers: async (req, res, next) => {
@@ -33,4 +33,4 @@ const user = {
   },
 };
 
-module.exports = user;
+export default user;
