@@ -3,6 +3,7 @@ h1 {
     justify-content: center;
     font-family: Permanent Marker;
     font-size: 60px;
+    text-shadow: 1px 1px 1px red;
 }
 .loginFormContainer {
     display: flex;
