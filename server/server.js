@@ -33,6 +33,14 @@ app.get('/users', user.getUsers, (req, res) => {
 
 app.post('/users/', user.createUser, (req, res) => res.sendStatus(201));
 
+app.post('/users/login', user.verifyUser, (req, res) => {
+  return res.status(200).send('Successful login');
+})
+
+// app.post('/users/login', (req, res) => {
+//   return res.status(200).send('Successful login');
+// })
+
 // show routes
 app.get('/shows', show.getShows, (req, res) => {
   return res.status(200).send(res.locals.result);

@@ -31,6 +31,32 @@ const user = {
       return next(errObj);
     }
   },
+
+  verifyUser: async (req, res, next) => {
+    try {
+      console.log(req.body);
+      // TODO: confirm we are able to get input value from form 
+      const username = req.body.usernameInput;
+      const password = req.body.passwordInput;
+      // TODO: confirm SQL query to match up username/password with db entries
+      const verifyUserQuery = `
+        SELECT * FROM users
+        WHERE username = ${username}
+      `
+      const result = await db.query(verifyUserQuery);
+      if (result.rows.length === 0) {
+        return res.status(401).send('Invalid email or password');
+      } 
+      return next();
+    } catch (err) {
+      const errObj = {
+        log: `Error authenticating user: ${err}`,
+        message: { err: 'Authentication failed, check server log for details' },
+        status: 500
+      };
+      return next(errObj);
+    }
+  }
 };
 
 module.exports = user;
