@@ -37,3 +37,11 @@ h1 {
     border-radius: 5px;
     width: 30%;
 }
+
+.mainPageContainer {
+    display: "flex"; 
+    justify-content: "center";
+    flex-Direction: "column";
+    max-width: 50%;
+    margin: auto;
+}

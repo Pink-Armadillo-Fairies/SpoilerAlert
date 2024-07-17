@@ -61,6 +61,7 @@ app.post('/episodes/', episode.createEpisode, (req, res) =>
 );
 
 //unknown route handler
+//replace 404 with index.html ---create a 404 page inside of react router
 app.use('*', (req, res) => res.sendStatus(404));
 
 // Global error handler
