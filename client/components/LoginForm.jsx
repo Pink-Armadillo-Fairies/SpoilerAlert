@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { successfulLogin } from '../loginSlice';
 import { Form, Container, Button } from 'react-bootstrap';
 import '../../client/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -37,9 +38,14 @@ const LoginForm= () => {
     //   setInputPasswordValue(event.target.value);
     // }
 
-    // const handleLoginSubmit = () => {
-    //   alert(`Username: ${inputUsernameValue} Password: ${inputPasswordValue}`)
-    // }
+    const handleLoginSubmit = () => {
+      alert(`Username: ${inputUsernameValue} Password: ${inputPasswordValue}`)
+    }
+
+    const navigate = useNavigate();
+    const gotoMainPage = () => {
+    navigate('/mainpage');
+  };
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -82,8 +88,8 @@ const LoginForm= () => {
             <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
             <Form.Control type="password"  onChange={handleInputChange} />
           </Form.Group> 
-          <Button className="loginButton" variant="login" type="submit">Log In</Button>
-          <div className="newUserLine"  style={{display: "flex",  alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
+          <Button className="loginButton" variant="login" type="submit" onClick={gotoMainPage} >Log In</Button>
+          <div className="newUserLine" style={{display: "flex",  alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
             <p>New to Spoiler Alert?</p>
             <a href="/create-user" style={{marginLeft: "10px"}}>Create New User</a>
           </div>
