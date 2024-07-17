@@ -34,6 +34,9 @@ const MainPage = () => {
         <Button className="saveInput" variant="watchUpdate" type="submit" style={{width: "30%", display: "flex", justifyContent: "center"}}>Save</Button>      
     </div>
       </Form>
+      <div>
+        
+      </div>
       </Container>
   )
 }
