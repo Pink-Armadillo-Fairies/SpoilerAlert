@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { successfulLogin } from '../loginSlice';
 import { Form, Container, Button } from 'react-bootstrap';
 import '../../client/styles.css';
-import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -43,9 +43,9 @@ const LoginForm= () => {
     }
 
     const navigate = useNavigate();
-    const gotoMainPage = () => {
-    navigate('/mainpage');
-  };
+  //   const gotoMainPage = () => {
+  //   navigate('/mainpage');
+  // };
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -59,9 +59,9 @@ const LoginForm= () => {
           body: JSON.stringify(loginInput),
         });
         if (response.ok) {
-          const responseData = await response.json();
-          console.log('verifyUser Response:', responseData);
-          // navigate('/mainpage');
+          // const responseData = await response.json();
+          // console.log('verifyUser Response:', responseData);
+          navigate('/mainpage');
           dispatch(successfulLogin())
         } else {
           console.error('Login failed');
@@ -88,7 +88,7 @@ const LoginForm= () => {
             <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
             <Form.Control type="password"  onChange={handleInputChange} />
           </Form.Group> 
-          <Button className="loginButton" variant="login" type="submit" onClick={gotoMainPage} >Log In</Button>
+          <Button className="loginButton" variant="login" type="submit" >Log In</Button>
           <div className="newUserLine" style={{display: "flex",  alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
             <p>New to Spoiler Alert?</p>
             <a href="/create-user" style={{marginLeft: "10px"}}>Create New User</a>

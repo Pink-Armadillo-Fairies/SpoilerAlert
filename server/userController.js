@@ -41,10 +41,11 @@ const user = {
       // TODO: confirm SQL query to match up username/password with db entries
       const verifyUserQuery = `
         SELECT * FROM users
-        WHERE username = ${username}
+        WHERE username = '${username}' AND password = '${password}'
       `
       const result = await db.query(verifyUserQuery);
-      if (result.rows.length === 0) {
+      console.log(result);
+      if (result.length === 0) {
         return res.status(401).send('Invalid email or password');
       } 
       return next();
