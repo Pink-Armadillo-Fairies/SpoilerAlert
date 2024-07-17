@@ -9,7 +9,9 @@ const show = require('./showController.js');
 const season = require('./seasonController.js');
 const episode = require('./episodeController.js');
 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.resolve(__dirname, '../build')));
+
+app.use('/client/assets', express.static(path.resolve(__dirname, '../client/assets')))
 
 app.use(express.json());
 
@@ -67,6 +69,8 @@ app.get('/episodes', episode.getEpisodes, (req, res) => {
 app.post('/episodes/', episode.createEpisode, (req, res) =>
   res.sendStatus(201)
 );
+
+app.post('/saveview', episode.saveView, (req,res)=> res.status(275).send("request sent"))
 
 //unknown route handler
 //replace 404 with index.html ---create a 404 page inside of react router

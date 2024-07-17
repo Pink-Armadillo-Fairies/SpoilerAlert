@@ -32,6 +32,24 @@ const episode = {
       return next(errObj);
     }
   },
+
+  saveView: (req, res, next) => {
+    try {
+      console.log(req.body)
+      // const result = await db.none(
+      //   `INSERT INTO episodes (number, title, season) VALUES ('${number}', '${title}', '${seasonID}')`
+      // );
+      return next();
+    } catch (err) {
+      const errObj = {
+        log: `create episode failed: ${err}`,
+        message: { err: 'create episode failed, check server log for details' },
+      };
+      return next(errObj);
+    }
+  },
+
+  
 };
 
 module.exports = episode;

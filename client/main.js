@@ -13,11 +13,11 @@ import MainPage from './components/MainPage.jsx';
 
 const router = createBrowserRouter(
   [
-    {path: '/',
+    {path: '/login',
      element: <LoginForm />,
      children: [],
     }, 
-    {path: '/mainpage',
+    {path: '/',
      element: <MainPage/>,
      children: [],
     }, 
