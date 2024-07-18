@@ -52,6 +52,7 @@ const episode = {
         INNER JOIN seasons ON episodes.season=seasons.id
         INNER JOIN shows ON seasons.show=shows.id`)
         console.log(result)
+        res.locals.watchParty = result
       return next();
     } catch (err) {
       const errObj = {

@@ -70,7 +70,7 @@ app.post('/episodes/', episode.createEpisode, (req, res) =>
   res.sendStatus(201)
 );
 
-app.post('/saveview', episode.saveView, (req,res)=> res.status(275).send("request sent"))
+app.post('/saveview', episode.saveView, (req,res)=> res.status(275).send(res.locals.watchParty))
 
 //unknown route handler
 //replace 404 with index.html ---create a 404 page inside of react router

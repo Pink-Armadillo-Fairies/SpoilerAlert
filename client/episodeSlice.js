@@ -28,13 +28,15 @@ const episodeSlice = createSlice({
     },
       updateWatchParty: (state, action) => {
         console.log(action);
-        const watch = action.value
+        const watch = action.payload;
+
+        console.log('watch', watch)
       
       
         return {...initialState, watchParty: watch}
       }
     }
 })
-export const { updateSeason, updateEpisode, updateMessage, saveView } = episodeSlice.actions;
+export const { updateSeason, updateEpisode, updateMessage, updateWatchParty } = episodeSlice.actions;
 export default episodeSlice.reducer;
 
