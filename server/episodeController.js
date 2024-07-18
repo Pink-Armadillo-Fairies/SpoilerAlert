@@ -33,12 +33,25 @@ const episode = {
     }
   },
 
-  saveView: (req, res, next) => {
+  saveView: async (req, res, next) => {
     try {
       console.log(req.body)
       // const result = await db.none(
       //   `INSERT INTO episodes (number, title, season) VALUES ('${number}', '${title}', '${seasonID}')`
       // );
+      const result = await db.any(`SELECT 
+        users.username as user,
+        shows.title as show,
+        seasons.number as season,
+        episodes.number as episode,
+        episodes.title as title
+        
+        FROM users 
+        INNER JOIN views ON users.id=views.user
+        INNER JOIN episodes ON views.episode=episodes.id
+        INNER JOIN seasons ON episodes.season=seasons.id
+        INNER JOIN shows ON seasons.show=shows.id`)
+        console.log(result)
       return next();
     } catch (err) {
       const errObj = {
