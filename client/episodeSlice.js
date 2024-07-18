@@ -6,7 +6,7 @@ const initialState =  {
     season: "",
     episode: "",
     message: "",
-    watchParty: {}
+    watchParty: []
 }
 
 const episodeSlice = createSlice({

@@ -9,6 +9,7 @@ import {
   updateMessage,
   updateWatchParty,
 } from '../episodeSlice';
+import WatchParty from './WatchParty.jsx'
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -150,6 +151,7 @@ const MainPage = () => {
           </Button>
         </div>
       </Form>
+      <WatchParty/>
     </Container>
   );
 };
