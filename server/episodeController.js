@@ -36,9 +36,15 @@ const episode = {
   saveView: async (req, res, next) => {
     try {
       console.log(req.body)
-      // const result = await db.none(
-      //   `INSERT INTO episodes (number, title, season) VALUES ('${number}', '${title}', '${seasonID}')`
-      // );
+      const sampleRequest = {
+        username: "surferdude99",
+        show: "Bridgerton",
+        season: "2",
+        episode: "8",
+        message: "No way, why'd they kill her?",
+        watchParty: {}
+
+      }
       const result = await db.any(`SELECT 
         users.username as user,
         shows.title as show,
