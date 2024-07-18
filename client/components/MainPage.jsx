@@ -13,7 +13,8 @@ import {
 const MainPage = () => {
   const dispatch = useDispatch();
   const episode = useSelector((store) => store.episode);
-  console.log('episode store', episode);
+  const username = useSelector((store) => store.login.username); 
+  //console.log('username', username)
 
   const saveView = async (input) => {
     console.log('input', input);
@@ -24,12 +25,12 @@ const MainPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(episode),
+        body: JSON.stringify({...episode, username}),
       });
       if (response.ok) {
         // const responseData = await response.json();
         // console.log('verifyUser Response:', responseData);
-        console.log(response);
+        //console.log(response);
         const watchParty =await response.json();
         dispatch(updateWatchParty(watchParty));
       } else {
@@ -43,7 +44,7 @@ const MainPage = () => {
   return (
     <Container className='mainPageContainer'>
       <div style={{ justifyContent: 'center', textAlign: 'center' }}>
-        <h2>Hi USER!</h2>
+        <h2>Hi {username}!</h2>
         <h3>You and your friends are watching this:</h3>
         <h4>Bridgerton</h4>
         <img
