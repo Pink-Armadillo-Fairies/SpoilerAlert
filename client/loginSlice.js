@@ -15,8 +15,10 @@ const loginSlice = createSlice({
         successfulLogin: (state, action) => {
             console.log(state)
             state.loginStatus = true;
+            state.userName=action.payload
             console.log("state:", state);
-            console.log("state.loginStatus:", state.loginStatus);
+            console.log("state.loginStatus:", state.loginStatus); 
+            console.log("username", state.userName)
         }
     }
 })

@@ -61,8 +61,8 @@ const LoginForm= () => {
         if (response.ok) {
           // const responseData = await response.json();
           // console.log('verifyUser Response:', responseData);
+          dispatch(successfulLogin(loginInput))
           navigate('/mainpage');
-          dispatch(successfulLogin())
         } else {
           console.error('Login failed');
         }
