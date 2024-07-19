@@ -1,4 +1,5 @@
 const db = require('./db_config.js');
+const { escape } = require('sqlstring');
 
 const episode = {
   getEpisodes: async (req, res, next) => {
@@ -35,41 +36,70 @@ const episode = {
 
   saveView: async (req, res, next) => {
     try {
-      console.log(req.body)
-      const sampleRequest = {
-        username: "surferdude99",
-        show: "Bridgerton",
-        season: "2",
-        episode: "8",
-        message: "No way, why'd they kill her?",
-        watchParty: {}
+      // const sampleRequest = {
+      //   username: 'surferdude99',
+      //   show: 'Bridgerton',
+      //   season: 2,
+      //   episode: 8,
+      //   message: "No way, why'd they kill her?",
+      //   watchParty: {},
+      // };
 
-      }
-      const result = await db.any(`SELECT 
+      // get userID
+      const user = await db.any(
+        `SELECT * FROM users WHERE "username"='${req.body.username}'`
+      );
+      const userID = user[0].id;
+
+      // search all episodes and extract episode ID
+      const allEpisodesQuery = `SELECT
+      shows.title as show_title,
+      seasons.number as season,
+      episodes.number as episode,
+      episodes.id as id
+
+      FROM episodes
+      INNER JOIN seasons ON episodes.season=seasons.id
+      INNER JOIN shows on seasons.show=shows.id`;
+      const allEpisodes = await db.any(allEpisodesQuery);
+      console.log(req.body);
+      const episodeID = allEpisodes.find(
+        (ep) =>
+          ep.show_title == req.body.show &&
+          ep.season == req.body.season &&
+          ep.episode == req.body.episode
+      ).id;
+
+      // escape message string for sql
+      const escapedString = escape(req.body.message);
+
+      // create new message with user id episode id and message body
+      const insertViewMessage = `INSERT INTO views ("user", episode, message) VALUES ($1, $2, $3);`;
+      await db.none(insertViewMessage, [userID, episodeID, escapedString]);
+
+      // return resulting views
+      const result = await db.any(`SELECT
         users.username as user,
         shows.title as show,
         seasons.number as season,
         episodes.number as episode,
         episodes.title as title
-        
-        FROM users 
+
+        FROM users
         INNER JOIN views ON users.id=views.user
         INNER JOIN episodes ON views.episode=episodes.id
         INNER JOIN seasons ON episodes.season=seasons.id
-        INNER JOIN shows ON seasons.show=shows.id`)
-        console.log(result)
-        res.locals.watchParty = result
+        INNER JOIN shows ON seasons.show=shows.id`);
+      res.locals.watchParty = result;
       return next();
     } catch (err) {
       const errObj = {
-        log: `create episode failed: ${err}`,
-        message: { err: 'create episode failed, check server log for details' },
+        log: `save view failed: ${err}`,
+        message: { err: 'save view failed, check server log for details' },
       };
       return next(errObj);
     }
   },
-
-  
 };
 
 module.exports = episode;
