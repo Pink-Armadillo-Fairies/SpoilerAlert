@@ -1,40 +1,47 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  show: "Bridgerton",
-  season: "",
-  episode: "",
-  message: "",
-  watchParty: [],
-};
+
+const initialState =  {
+    show: "Bridgerton",
+    season: "",
+    episode: "",
+    message: "",
+    watchParty: [],
+    showComments: false,
+}
 
 const episodeSlice = createSlice({
-  name: "episodeUpdate",
-  initialState,
-  reducers: {
-    //log in successful
-    updateSeason: (state, action) => {
-      state.season = action.payload;
-      console.log("state.season:", state.season);
+    name: 'episodeUpdate',
+    initialState,
+    reducers: {
+      //log in successful
+      updateSeason: (state, action) => {
+          state.season = action.payload;
+          console.log("state.season:", state.season);
+      },
+      updateEpisode: (state, action) => {
+        state.episode = action.payload;
+        console.log("state.episode:", state.episode);
+      },
+      updateMessage: (state, action) => {
+        state.message = action.payload;
+        console.log("state.message:", state.message);
     },
-    updateEpisode: (state, action) => {
-      state.episode = action.payload;
-      console.log("state.episode:", state.episode);
-    },
-    updateMessage: (state, action) => {
-      state.message = action.payload;
-      console.log("state.message:", state.message);
-    },
-    updateWatchParty: (state, action) => {
-      console.log(action);
-      const watch = action.payload;
+      updateWatchParty: (state, action) => {
+        console.log(action);
+        const watch = action.payload;
 
-      console.log("watch", watch);
+        console.log('watch', watch)
+      
+      
+        return {...initialState, watchParty: watch}
+      },
+      updateSeeComments: (state, action) => {
+        state.seeComments = !state.seeComments; 
+      }
+    }
+})
 
-      return { ...initialState, watchParty: watch };
-    },
-  },
-});
-export const { updateSeason, updateEpisode, updateMessage, updateWatchParty } =
-  episodeSlice.actions;
+export const { updateSeason, updateEpisode, updateMessage, updateWatchParty, updateSeeComments } = episodeSlice.actions;
 export default episodeSlice.reducer;
+

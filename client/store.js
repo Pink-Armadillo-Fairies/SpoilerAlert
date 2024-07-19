@@ -5,7 +5,7 @@ import episodeReducer from './episodeSlice';
 const store = configureStore({
     reducer: {
         login: loginReducer,
-        episode: episodeReducer
+        episode: episodeReducer,
     }
 });
 

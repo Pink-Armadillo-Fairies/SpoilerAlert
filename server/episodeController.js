@@ -83,9 +83,11 @@ const episode = {
         shows.title as show,
         seasons.number as season,
         episodes.number as episode,
-        episodes.title as title
+        episodes.title as title,
+        views.message as message
+        
+        FROM users 
 
-        FROM users
         INNER JOIN views ON users.id=views.user
         INNER JOIN episodes ON views.episode=episodes.id
         INNER JOIN seasons ON episodes.season=seasons.id
