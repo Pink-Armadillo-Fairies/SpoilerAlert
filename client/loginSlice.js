@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState =  {
-    userName: '',
-    userPassword: '',
+    username: '',
     loginStatus: false,
 }
 
@@ -13,10 +12,12 @@ const loginSlice = createSlice({
     reducers: {
         //log in successful
         successfulLogin: (state, action) => {
-            console.log(state)
+            //console.log(state)
             state.loginStatus = true;
+            state.username =action.payload;
             console.log("state:", state);
-            console.log("state.loginStatus:", state.loginStatus);
+            //console.log("state.loginStatus:", state.loginStatus); 
+            //console.log("username", state.userName)
         }
     }
 })
