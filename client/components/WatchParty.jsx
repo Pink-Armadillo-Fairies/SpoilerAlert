@@ -3,7 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import '../../client/styles.css';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import updateSeeComments from '../episodeSlice.js';
+import { updateSeeComments } from '../episodeSlice.js';
 
 
 
@@ -34,12 +34,6 @@ const WatchParty = () => {
   
   party.sort((a, b) => a.viewOrder - b.viewOrder);
   
-  const relativeStatus = (el) => {
-    let variant = '';
-    
-    return variant
-  };
-  
   party.forEach((el) => {
     el.user === me
       ? (el.variant = 'primary')
@@ -52,12 +46,20 @@ const WatchParty = () => {
   party.forEach((el) => {
     if (el.viewOrder === maxCache[el.user]) {
       let message = <div></div>;
-      if (seeCommentsToggle) {
+      if (seeCommentsToggle && el.variant !== 'danger') {
         message = 
           <div>
-            {el.message}
+            <h3>{el.message}</h3>
           </div>
       }
+
+      if (seeCommentsToggle && el.variant === 'danger'){
+        message = 
+          <div>
+            <h3>Warning: Spoilers!</h3>
+          </div>
+      }
+
       watchList.push(
         <ListGroup.Item variant = {el.variant}>
           {`${el.user} - watched up to S${el.season}, Ep ${el.episode}`}
@@ -69,7 +71,7 @@ const WatchParty = () => {
   });
 
   const seeCommentsBtn = () => {
-    dispatch(updateSeeComments);
+    dispatch(updateSeeComments());
   }
 
   if(watchList.length > 0){

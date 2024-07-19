@@ -42,6 +42,6 @@ const episodeSlice = createSlice({
     }
 })
 
-export const { updateSeason, updateEpisode, updateMessage, updateWatchParty } = episodeSlice.actions;
+export const { updateSeason, updateEpisode, updateMessage, updateWatchParty, updateSeeComments } = episodeSlice.actions;
 export default episodeSlice.reducer;
 
