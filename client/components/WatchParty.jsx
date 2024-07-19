@@ -62,7 +62,7 @@ const WatchParty = () => {
 
       watchList.push(
         <ListGroup.Item variant = {el.variant}>
-          {`${el.user} - watched up to S${el.season}, Ep ${el.episode}`}
+          {`${el.user} - watched up to S${el.season}, Ep ${el.episode} - "${el.title}"`}
           {message}
         </ListGroup.Item>
       );
