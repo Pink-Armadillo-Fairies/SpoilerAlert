@@ -26,6 +26,7 @@
     "react-router-dom": "^6.25.0",
     "redux": "^5.0.1",
     "sass": "^1.77.8",
+    "sqlstring": "^2.3.3",
     "style-loader": "^4.0.0",
     "webpack": "^5.92.1"
   },
