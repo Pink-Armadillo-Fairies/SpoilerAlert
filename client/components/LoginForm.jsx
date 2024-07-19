@@ -77,7 +77,7 @@ const LoginForm= () => {
      <Container className="loginFormContainer">
 
 
-      <Form className="loginBox" onSubmit={handleSubmit}>
+      <Form className="loginBox" onSubmit={handleSubmit} >
 
       <p style={{fontFamily: "arial", fontSize: "20px"}}>Login</p>
         <Form.Group className="usernameInput" controlId="usernameInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
@@ -88,10 +88,10 @@ const LoginForm= () => {
             <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
             <Form.Control type="password"  onChange={handleInputChange} />
           </Form.Group> 
-          <Button className="loginButton" variant="login" type="submit" >Log In</Button>
-          <div className="newUserLine" style={{display: "flex",  alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
-            <p>New to Spoiler Alert?</p>
-            <a href="/create-user" style={{marginLeft: "10px"}}>Create New User</a>
+          <Button className="loginButton" variant="login" type="submit" style={{border: "1px solid black"}} >Log In</Button>
+          <div className="newUserLine" style={{display: "flex", alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
+            <p style={{margin:"0"}}>New to Spoiler Alert?</p>
+            <a href="/create-user" style={{marginLeft: "20px"}}>Create New User</a>
           </div>
           
         </Form>
