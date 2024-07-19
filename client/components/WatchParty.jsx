@@ -3,12 +3,15 @@ import { ListGroup } from 'react-bootstrap';
 import '../../client/styles.css';
 import { useSelector, useDispatch } from 'react-redux';
 
+
+
 const WatchParty = () => {
   const stateParty = useSelector((store) => store.episode.watchParty);
   const party = [];
   const maxCache = {};
   const watchList = [];
   const me = useSelector((store) => store.login.username);
+  let header = <></>;
 
   stateParty.forEach((el) => {
     //create a value to index viewer's progress in a series
@@ -43,9 +46,14 @@ const WatchParty = () => {
       );
     }
   });
+
+  if(watchList.length > 0){
+    header = <h3>WATCH PARTY</h3>
+  };
+  
   return (
     <div>
-      {() => {if(watchList.length > 0){<h3>WATCH PARTY</h3>}}}
+      {header}
       <ListGroup>{watchList}</ListGroup>
     </div>
   );

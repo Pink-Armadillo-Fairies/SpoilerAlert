@@ -11,7 +11,7 @@ import LoginForm from './components/LoginForm.jsx';
 import MainPage from './components/MainPage.jsx';
 
 //to include bootstrap styling uncomment this line:
-//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 const router = createBrowserRouter(
