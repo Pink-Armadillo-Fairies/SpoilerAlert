@@ -62,11 +62,12 @@ const episode = {
       INNER JOIN seasons ON episodes.season=seasons.id
       INNER JOIN shows on seasons.show=shows.id`;
       const allEpisodes = await db.any(allEpisodesQuery);
+      console.log(req.body);
       const episodeID = allEpisodes.find(
         (ep) =>
-          ep.show_title === req.body.show &&
-          ep.season === req.body.season &&
-          ep.episode === req.body.episode
+          ep.show_title == req.body.show &&
+          ep.season == req.body.season &&
+          ep.episode == req.body.episode
       ).id;
 
       // escape message string for sql
