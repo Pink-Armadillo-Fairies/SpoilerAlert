@@ -50,7 +50,7 @@ const LoginForm= () => {
     const handleSubmit = async (event) => {
       event.preventDefault();
       try {
-        console.log('fetching', loginInput);
+        //console.log('fetching', loginInput.user);
         const response = await fetch('/users/login', {
           method: 'POST',
           headers: {
@@ -61,8 +61,8 @@ const LoginForm= () => {
         if (response.ok) {
           // const responseData = await response.json();
           // console.log('verifyUser Response:', responseData);
+          dispatch(successfulLogin(loginInput.usernameInput))
           navigate('/mainpage');
-          dispatch(successfulLogin())
         } else {
           console.error('Login failed');
         }
