@@ -2,6 +2,8 @@ import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import '../../client/styles.css';
 import { useSelector, useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import updateSeeComments from '../episodeSlice.js';
 
 
 
@@ -12,6 +14,8 @@ const WatchParty = () => {
   const watchList = [];
   const me = useSelector((store) => store.login.username);
   let header = <></>;
+  const seeCommentsToggle = useSelector((store) => store.episode.seeComments);
+  const dispatch = useDispatch();
 
   stateParty.forEach((el) => {
     //create a value to index viewer's progress in a series
@@ -39,16 +43,34 @@ const WatchParty = () => {
 
   party.forEach((el) => {
     if (el.viewOrder === maxCache[el.user]) {
+      let message = <div></div>;
+      if (seeCommentsToggle) {
+        message = 
+          <div>
+            {el.message}
+          </div>
+      }
       watchList.push(
         <ListGroup.Item variant = {relativeStatus(el)}>
           {`${el.user} - watched up to S${el.season}, Ep ${el.episode}`}
+          {message}
         </ListGroup.Item>
       );
     }
   });
 
+  const seeCommentsBtn = () => {
+    dispatch(updateSeeComments);
+  }
+
   if(watchList.length > 0){
-    header = <h3>WATCH PARTY</h3>
+    header = 
+      <div>
+        <h3>WATCH PARTY</h3>
+        <Button onClick={seeCommentsBtn}>See Comments</Button>
+      </div>
+      
+
   };
   
   return (

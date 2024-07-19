@@ -6,7 +6,8 @@ const initialState =  {
     season: "",
     episode: "",
     message: "",
-    watchParty: []
+    watchParty: [],
+    showComments: false,
 }
 
 const episodeSlice = createSlice({
@@ -34,9 +35,13 @@ const episodeSlice = createSlice({
       
       
         return {...initialState, watchParty: watch}
+      },
+      updateSeeComments: (state, action) => {
+        state.seeComments = !state.seeComments; 
       }
     }
 })
+
 export const { updateSeason, updateEpisode, updateMessage, updateWatchParty } = episodeSlice.actions;
 export default episodeSlice.reducer;
 
