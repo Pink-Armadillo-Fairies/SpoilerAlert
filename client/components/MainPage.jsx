@@ -43,16 +43,18 @@ const MainPage = () => {
   };
 
   return (
-    <Container className='mainPageContainer'>
-      <div style={{ justifyContent: 'center', textAlign: 'center' }}>
-        <h2>Hi {username}!</h2>
-        <h3>You and your friends are watching this:</h3>
-        <h4>Bridgerton</h4>
-        <img
-          src='./client/assets/bridgerton.jpg'
-          alt='bridgerton-picture'
-          style={{ width: '100px' }}
-        ></img>
+    <Container className='mainPageContainer' >
+      <div className='generalInfo'style={{ border: "2px solid black", boxShadow: "1px 1px 1px red", borderRadius: "5px", width: "100%", height: "200px", padding: "20px" }}>
+        <h3 style={{display: "flex", justifyContent: "start", paddingTop: "15px", fontFamily: "Ubuntu Condensed"}}>Hi, {username}!</h3>
+        <div style={{display: "flex", alignItems: "center", justifyContent: "space-around"}}>
+          <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>You and your friends are currently watching:</h4>
+          {/*<h4>Bridgerton</h4>*/}
+          <img
+            src='./client/assets/bridgerton.jpg'
+            alt='bridgerton-picture'
+            style={{ width: '75px' }}
+          ></img>
+        </div>
       </div>
       <Form
         className='submitWatchProgess'
@@ -65,6 +67,10 @@ const MainPage = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          border: '2px solid black',
+          marginTop: '10px',
+          marginBottom: '10px',
+          boxShadow: '1px 1px 2px red'
         }}
       >
         {/* TODO: add onChange function and value attribute */}
@@ -82,7 +88,7 @@ const MainPage = () => {
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Form.Label
-              style={{ fontFamily: 'arial', color: 'black', fontSize: '10px' }}
+              style={{ fontFamily: 'arial', color: 'black', fontSize: '12px', fontFamily: 'Ubuntu Condensed' }}
             >
               Season
             </Form.Label>
@@ -98,7 +104,7 @@ const MainPage = () => {
             style={{ display: 'flex', flexDirection: 'column' }}
           >
             <Form.Label
-              style={{ fontFamily: 'arial', color: 'black', fontSize: '10px' }}
+              style={{ fontFamily: 'arial', color: 'black', fontSize: '12px', fontFamily: 'Ubuntu Condensed' }}
             >
               Episode
             </Form.Label>
@@ -122,7 +128,7 @@ const MainPage = () => {
             style={{ display: 'flex', flexDirection: 'column', width: '90%' }}
           >
             <Form.Label
-              style={{ fontFamily: 'arial', color: 'black', fontSize: '10px' }}
+              style={{ fontFamily: 'Ubuntu Condensed', color: 'black', fontSize: '12px' }}
             >
               What do you think of this episode? Write your comments:
             </Form.Label>
@@ -145,7 +151,7 @@ const MainPage = () => {
             className='saveInput'
             variant='watchUpdate'
             type='submit'
-            style={{ width: '30%', display: 'flex', justifyContent: 'center' }}
+            style={{ width: '30%', display: 'flex', justifyContent: 'center', border: '1px solid black'}}
           >
             Save
           </Button>
