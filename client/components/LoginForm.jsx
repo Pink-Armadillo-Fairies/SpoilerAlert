@@ -79,19 +79,19 @@ const LoginForm= () => {
 
       <Form className="loginBox" onSubmit={handleSubmit} >
 
-      <p style={{fontFamily: "arial", fontSize: "20px"}}>Login</p>
+      <p style={{fontFamily: "arial", fontSize: "25px"}}>Welcome!</p>
         <Form.Group className="usernameInput" controlId="usernameInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
-          <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Username</Form.Label>
+          <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "15px"}}>Username</Form.Label>
           <Form.Control type="text" onChange={handleInputChange}/>
         </Form.Group>
           <Form.Group className="passwordInput" controlId="passwordInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
-            <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
+            <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "15px"}}>Password</Form.Label>
             <Form.Control type="password"  onChange={handleInputChange} />
           </Form.Group> 
           <Button className="loginButton" variant="login" type="submit" style={{border: "1px solid black"}} >Log In</Button>
           <div className="newUserLine" style={{display: "flex", alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
-            <p style={{margin:"0"}}>New to Spoiler Alert?</p>
-            <a href="#" onClick={()=>navigate('/signup')} style={{marginLeft: "20px", color: 'red'}}>Create New User</a>
+            <p style={{margin:"0", fontSize: "15px"}}>New to Spoiler Alert?</p>
+            <a href="#" onClick={()=>navigate('/signup')} style={{marginLeft: "20px", color: 'red', fontSize: "15px"}}>Create New User</a>
           </div>
           
         </Form>
