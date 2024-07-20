@@ -48,3 +48,9 @@ h1 {
     max-width: 50%;
     margin: auto;
 }
+
+.horizontalLine {
+    background-color: black;
+    height: 3px;
+    box-shadow: 0 2px 2px red;
+}
