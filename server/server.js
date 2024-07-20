@@ -39,6 +39,10 @@ app.post('/users/login', user.verifyUser, (req, res) => {
   return res.status(200).send('Successful login');
 })
 
+app.post('/users/signup', user.createUser, (req, res) => {
+  return res.status(200).send('Successful Signup');
+})
+
 // app.post('/users/login', (req, res) => {
 //   return res.status(200).send('Successful login');
 // })

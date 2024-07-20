@@ -9,7 +9,7 @@ import '../../client/styles.css';
 
 
 
-const LoginForm= () => {
+const Signup = () => {
     // const [inputUsernameValue, setInputUsernameValue] = useState('');
     // const [inputPasswordValue, setInputPasswordValue] = useState('');
 
@@ -51,7 +51,7 @@ const LoginForm= () => {
       event.preventDefault();
       try {
         //console.log('fetching', loginInput.user);
-        const response = await fetch('/users/login', {
+        const response = await fetch('/users/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const LoginForm= () => {
           dispatch(successfulLogin(loginInput.usernameInput))
           navigate('/mainpage');
         } else {
-          console.error('Login failed');
+          console.error('Sign up failed');
         }
       } catch (err) {
         console.error('Error with login fetch:', err)
@@ -79,7 +79,7 @@ const LoginForm= () => {
 
       <Form className="loginBox" onSubmit={handleSubmit} >
 
-      <p style={{fontFamily: "arial", fontSize: "20px"}}>Login</p>
+      <p style={{fontFamily: "arial", fontSize: "20px"}}>Sign Up</p>
         <Form.Group className="usernameInput" controlId="usernameInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
           <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Username</Form.Label>
           <Form.Control type="text" onChange={handleInputChange}/>
@@ -88,11 +88,7 @@ const LoginForm= () => {
             <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Password</Form.Label>
             <Form.Control type="password"  onChange={handleInputChange} />
           </Form.Group> 
-          <Button className="loginButton" variant="login" type="submit" style={{border: "1px solid black"}} >Log In</Button>
-          <div className="newUserLine" style={{display: "flex", alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
-            <p style={{margin:"0"}}>New to Spoiler Alert?</p>
-            <a onClick={()=>navigate('/signup')} style={{marginLeft: "20px", color: 'red', textDecoration: "underline"}}>Create New User</a>
-          </div>
+          <Button className="loginButton" variant="login" type="submit" style={{border: "1px solid black"}} >Sign Up</Button>
           
         </Form>
         
@@ -100,4 +96,4 @@ const LoginForm= () => {
     )
 }
 
-export default LoginForm;
+export default Signup;

@@ -17,8 +17,8 @@ const user = {
 
   createUser: async (req, res, next) => {
     try {
-      const username = req.body.username;
-      const password = req.body.password;
+      const username = req.body.usernameInput;
+      const password = req.body.passwordInput;
       const result = await db.none(
         `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`
       );

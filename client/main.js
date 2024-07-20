@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ShowSelection from './components/ShowSelection.jsx';
 import LoginForm from './components/LoginForm.jsx';
+import Signup from './components/Signup.jsx';
 import MainPage from './components/MainPage.jsx';
 
 //to include bootstrap styling uncomment this line:
@@ -24,6 +25,10 @@ const router = createBrowserRouter(
      element: <MainPage/>,
      children: [],
     }, 
+    {path: '/signup',
+      element: <Signup/>,
+      children: [],
+     }
   ])
 
 
