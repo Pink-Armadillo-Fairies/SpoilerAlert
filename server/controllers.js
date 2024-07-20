@@ -1,8 +1,5 @@
-require('dotenv').config();
-const pgp = require('pg-promise')(/* options */);
-const db = pgp(
-  `postgresql://postgres.gjitkjeyoojbanjtglag:${process.env.SUPABASE_PG_KEY}@aws-0-us-east-1.pooler.supabase.com:6543/postgres`
-);
+const db = require('./db_config.js');
+
 const testMiddleware = {
   test: (req, res, next) => {
     console.log('working');
@@ -10,7 +7,7 @@ const testMiddleware = {
   },
   sqlGetTest: async (req, res, next) => {
     try {
-      const result = await db.any('select * from "usernames"');
+      const result = await db.any('select * from "users"');
       console.log(result);
       res.locals.result = result;
       return next();

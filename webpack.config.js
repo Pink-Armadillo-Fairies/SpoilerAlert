@@ -36,12 +36,12 @@ module.exports = {
   devServer: {
     static: {
       publicPath: '/',
-      directory: path.resolve(__dirname),
+      directory: path.resolve(__dirname, 'build'),
     },
     port: 8080,
     proxy: [
       {
-        context: ['/api'],
+        context: ['/'],
         target: 'http://localhost:3000',
       },
     ],
