@@ -49,20 +49,20 @@ const WatchParty = () => {
       if (seeCommentsToggle && el.variant !== 'danger') {
         message = 
           <div>
-            <h3>{el.message}</h3>
+            <h4 style={{fontFamily: "Ubuntu Condensed", paddingTop: "10px"}}>{el.message}</h4>
           </div>
       }
 
       if (seeCommentsToggle && el.variant === 'danger'){
         message = 
           <div>
-            <h3>Warning: Spoilers!</h3>
+            <h4 style={{fontFamily: "Ubuntu Condensed", paddingTop: "10px"}}>Warning: Spoilers!</h4>
           </div>
       }
 
       watchList.push(
         <ListGroup.Item variant = {el.variant}>
-          {`${el.user} - watched up to S${el.season}, Ep ${el.episode} - "${el.title}"`}
+          <span style={{fontFamily: "Ubuntu Condensed", marginBottom: "5px"}}>{`${el.user} - watched up to S${el.season}, Ep ${el.episode} - "${el.title}"`}</span>
           {message}
         </ListGroup.Item>
       );
@@ -76,9 +76,12 @@ const WatchParty = () => {
 
   if(watchList.length > 0){
     header = 
-      <div>
-        <h3>WATCH PARTY</h3>
-        <Button onClick={seeCommentsBtn}>See Comments</Button>
+      <div style={{display: "flex", flexDirection: "column", marginTop: "30px"}}>
+        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "Ubuntu Condensed", paddingLeft: "10px", paddingRight: "10px"}}>
+          <h3>WATCH PARTY</h3>
+          <Button onClick={seeCommentsBtn} style={{backgroundColor: "white", color: "black", border: "1px solid black"}}>See Comments</Button>
+        </div>
+        <hr className="horizontalLine" ></hr>
       </div>
       
 
@@ -87,7 +90,7 @@ const WatchParty = () => {
   return (
     <div>
       {header}
-      <ListGroup>{watchList}</ListGroup>
+      <ListGroup style={{marginBottom: "80px"}}>{watchList}</ListGroup>
     </div>
   );
 };
