@@ -2,7 +2,7 @@ h1 {
     display: flex;
     justify-content: center;
     font-family: Permanent Marker;
-    font-size: 60px;
+    font-size: 75px;
     text-shadow: 1px 1px 1px red;
     padding-top: 40px;
     padding-bottom: 20px;
@@ -21,7 +21,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    padding: 15px 10px;
     height: auto;
     width: 25%;
 }
