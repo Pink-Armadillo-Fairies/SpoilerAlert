@@ -91,7 +91,7 @@ const LoginForm= () => {
           <Button className="loginButton" variant="login" type="submit" style={{border: "1px solid black"}} >Log In</Button>
           <div className="newUserLine" style={{display: "flex", alignItems: "center", fontFamily: "Arial", fontSize: "10px", marginTop: "40px"}}>
             <p style={{margin:"0"}}>New to Spoiler Alert?</p>
-            <a onClick={()=>navigate('/signup')} style={{marginLeft: "20px", color: 'red', textDecoration: "underline"}}>Create New User</a>
+            <a href="#" onClick={()=>navigate('/signup')} style={{marginLeft: "20px", color: 'red'}}>Create New User</a>
           </div>
           
         </Form>

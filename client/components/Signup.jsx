@@ -38,9 +38,9 @@ const Signup = () => {
     //   setInputPasswordValue(event.target.value);
     // }
 
-    const handleLoginSubmit = () => {
-      alert(`Username: ${inputUsernameValue} Password: ${inputPasswordValue}`)
-    }
+    // const handleLoginSubmit = () => {
+    //   alert(`Username: ${inputUsernameValue} Password: ${inputPasswordValue}`)
+    // }
 
     const navigate = useNavigate();
   //   const gotoMainPage = () => {
@@ -79,7 +79,7 @@ const Signup = () => {
 
       <Form className="loginBox" onSubmit={handleSubmit} >
 
-      <p style={{fontFamily: "arial", fontSize: "20px"}}>Sign Up</p>
+      {/* <p style={{fontFamily: "arial", fontSize: "20px"}}>Sign Up</p> */}
         <Form.Group className="usernameInput" controlId="usernameInput" style={{display: "flex", flexDirection: "column", alignItems: "start"}}>
           <Form.Label style={{fontFamily: "arial", color: "black", fontSize: "10px"}}>Username</Form.Label>
           <Form.Control type="text" onChange={handleInputChange}/>
