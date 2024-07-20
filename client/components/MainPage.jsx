@@ -151,7 +151,7 @@ const MainPage = () => {
             className='saveInput'
             variant='watchUpdate'
             type='submit'
-            style={{ width: '30%', display: 'flex', justifyContent: 'center', border: '1px solid black'}}
+            style={{ width: '30%', display: 'flex', justifyContent: 'center', fontFamily: "Ubuntu Condensed", border: '1px solid black'}}
           >
             Save
           </Button>
