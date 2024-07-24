@@ -10,7 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     publicPath: '/',
   },
-  mode: 'development',
+  mode: process.env.NODE_ENV,
   module: {
     rules: [
       {
