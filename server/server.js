@@ -76,6 +76,13 @@ app.post('/episodes/', episode.createEpisode, (req, res) =>
 
 app.post('/saveview', episode.saveView, (req,res)=> res.status(275).send(res.locals.watchParty))
 
+// catch-all route handler for any requests to an unknown route
+app.use('*', (req, res) => {
+  console.log('catch-all route handler is executed');
+  return res.status(200).sendFile(path.join(__dirname, '../build', 'index.html'));
+});
+
+
 //unknown route handler
 //replace 404 with index.html ---create a 404 page inside of react router
 app.use('*', (req, res) => res.sendStatus(404));
