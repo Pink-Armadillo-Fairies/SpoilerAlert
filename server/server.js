@@ -2,23 +2,31 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 const path = require('path');
+const cookieParser = require('cookie-parser'); 
 
-const testMiddleware = require('./controllers.js');
-const user = require('./userController.js');
+// const testMiddleware = require('./controllers.js');
+const user = require('./controllers/userController.js');
 const show = require('./showController.js');
 const season = require('./seasonController.js');
 const episode = require('./episodeController.js');
+const session = require('./controllers/sessionController.js');
+const cookie = require('./controllers/cookieController.js');
 
 app.use(express.static(path.resolve(__dirname, '../build')));
 
 app.use('/client/assets', express.static(path.resolve(__dirname, '../client/assets')))
 
+// handling incoming request bodies as JSON
 app.use(express.json());
+
+// cookie parser - populate req.cookies
+app.use(cookieParser());
 
 app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '../build/index.html'))
 ); // Serve from the current directory
 
+/* test routes for db 
 //test routing to see if db query middleware works
 app.get('/test', testMiddleware.sqlGetTest, (req, res) =>
   res.status(250).send(res.locals.result)
@@ -27,25 +35,22 @@ app.get('/test', testMiddleware.sqlGetTest, (req, res) =>
 app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) =>
   res.sendStatus(250)
 );
+*/
 
 // user routes
 app.get('/users', user.getUsers, (req, res) => {
   return res.status(200).send(res.locals.result);
 });
 
-app.post('/users/', user.createUser, (req, res) => res.sendStatus(201));
+// app.post('/users/', user.createUser, (req, res) => res.sendStatus(201)); // -> seems not necessary. to be removed. 
 
-app.post('/users/login', user.verifyUser, (req, res) => {
+app.post('/users/login', user.verifyUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
   return res.status(200).send('Successful login');
 })
 
-app.post('/users/signup', user.createUser, (req, res) => {
+app.post('/users/signup', user.createUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
   return res.status(200).send('Successful Signup');
 })
-
-// app.post('/users/login', (req, res) => {
-//   return res.status(200).send('Successful login');
-// })
 
 // show routes
 app.get('/shows', show.getShows, (req, res) => {
