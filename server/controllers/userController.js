@@ -1,4 +1,5 @@
-const db = require('./db_config.js');
+const db = require('../db_config.js');
+const bcrypt = require('bcryptjs');
 
 const user = {
   getUsers: async (req, res, next) => {
@@ -19,9 +20,20 @@ const user = {
     try {
       const username = req.body.usernameInput;
       const password = req.body.passwordInput;
-      const result = await db.none(
-        `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`
-      );
+      
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const createUserQuery = `
+        INSERT INTO users (username, password) 
+        VALUES ($1, $2) 
+        RETURNING*
+      `
+
+      const createUserParam = [username, hashedPassword];
+
+      const result = await db.any(createUserQuery, createUserParam);
+      // pass a created user object to next middleware 
+      res.locals.user = result[0];
       return next();
     } catch (err) {
       const errObj = {
@@ -34,21 +46,34 @@ const user = {
 
   verifyUser: async (req, res, next) => {
     try {
-      console.log(req.body);
-      // TODO: confirm we are able to get input value from form 
       const username = req.body.usernameInput;
       const password = req.body.passwordInput;
-      // TODO: confirm SQL query to match up username/password with db entries
+
       const verifyUserQuery = `
         SELECT * FROM users
-        WHERE username = '${username}' AND password = '${password}'
+        WHERE username = $1
+        LIMIT 1
       `
-      const result = await db.query(verifyUserQuery);
-      console.log(result);
-      if (result.length === 0) {
-        return res.status(401).send('Invalid email or password');
-      } 
+
+      const verifyUserParam = [username];
+
+      const result = await db.query(verifyUserQuery, verifyUserParam);
+
+      console.log('result', result)
+      
+      const storedUser = result[0];
+
+      console.log('stored user is', storedUser)
+
+      if (!storedUser || !(await bcrypt.compare(password, storedUser.password))) {
+        // return res.redirect('/signup'); // show an error message in frontend (LoginForm.jsx), instead of handling redirection here.
+        return res.status(404).send('error')
+      }
+      
+      res.locals.user = storedUser;
+      console.log('storedUser is ', storedUser);
       return next();
+
     } catch (err) {
       const errObj = {
         log: `Error authenticating user: ${err}`,
