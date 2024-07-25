@@ -36,9 +36,13 @@ const show = {
 
   createShow: async (req, res, next) => {
     try {
-      const title = req.body.title;
+      // const {title, photoURL, } = res.locals.show
+      //const title = res.locals.show.name;
+      //Column name in DB is 'title', response from API is 'name'
+      const {name, image} = res.locals.show;
+      console.log(name, image.medium);
       const result = await db.none(
-        `INSERT INTO shows (title) VALUES ('${title}')`
+        `INSERT INTO shows (title, image) VALUES ('${name}', '${image.medium}' )`
       );
       return next();
     } catch (err) {
@@ -49,6 +53,28 @@ const show = {
       return next(errObj);
     }
   },
+
+  searchShows: async (req, res, next) => {
+    try {
+      // TO-DO: update search to be the value we receive from the search input
+      const searchInput = 'breaking bad';
+      const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${searchInput}`);
+      console.log('response', response);
+
+      let data = await response.json();
+
+      res.locals.show = data;
+    
+      next();      
+
+    } catch (err) {
+      const errObj = {
+        log: `search show failed: ${err}`,
+        message: { err: 'search show failed, check server log for details' },
+      };
+      return next(errObj);
+    }
+  }
 };
 
 module.exports = show;
