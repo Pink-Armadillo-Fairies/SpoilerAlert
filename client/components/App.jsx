@@ -2,6 +2,7 @@ import React from 'react';
 import LoginForm from './LoginForm.jsx';
 import MainPage from './MainPage.jsx';
 import ShowSelection from './ShowSelection.jsx';
+import Signup from './Signup.jsx'
 import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
         <Route path='/' element={<LoginForm />} />
         <Route path='/mainpage' element={<MainPage />} />
         <Route path='/shows' element={<ShowSelection />} />
+        <Route path='/signup' element={<Signup />} />
       </Routes>
     </>
   )
