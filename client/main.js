@@ -6,13 +6,15 @@ import { Provider } from 'react-redux';
 import App from './components/App.jsx';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ShowSelection from './components/ShowSelection.jsx';
+// import ShowSelection from './components/ShowSelection.jsx';
+// import Dashboard from './components/Dashboard.jsx';
 import LoginForm from './components/LoginForm.jsx';
 import Signup from './components/Signup.jsx';
 import MainPage from './components/MainPage.jsx';
 
 //to include bootstrap styling uncomment this line:
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Dashboard from './components/Dashboard.jsx';
 
 
 const router = createBrowserRouter(
@@ -28,7 +30,11 @@ const router = createBrowserRouter(
     {path: '/signup',
       element: <Signup/>,
       children: [],
-     }
+     },
+     {path: '/dashboard',
+     element: <Dashboard/>,
+     children: [],
+    }
   ])
 
 
