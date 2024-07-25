@@ -4,6 +4,15 @@ const show = {
   getShows: async (req, res, next) => {
     try {
       const result = await db.any('select * from "shows"');
+
+      if (!result || result.length === 0) {
+        return next({
+          log: 'getShows function: No shows found in the database',
+          status: 404,
+          message: { err: 'No shows available, from getShows function' }
+        });
+      }
+
       res.locals.result = result;
       return next();
     } catch (err) {
