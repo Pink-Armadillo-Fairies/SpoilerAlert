@@ -29,7 +29,8 @@ app.get('/', (req, res) =>
 
 // TEST ROUTE FOR API CALL
 
-app.get('/searchshows', show.searchShows, show.createShow, (req, res) =>{
+app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, (req, res) =>{
+  //console.log(res.locals.show);
   return res.status(200).json(res.locals.show);
 })
 
