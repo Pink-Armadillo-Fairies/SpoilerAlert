@@ -25,7 +25,7 @@ const Dashboard = () => {
         {shows.map((show) => (
           <Card key={show.id} className="m-2">
             <Card.Body>
-              <Card.Title>{show.title}</Card.Title>
+            <Card.Img variant="top" src={show.image} alt={show.title} />
             </Card.Body>
           </Card>
         ))}
