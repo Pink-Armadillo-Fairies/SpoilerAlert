@@ -57,6 +57,12 @@ app.get('/shows', show.getShows, (req, res) => {
   return res.status(200).send(res.locals.result);
 });
 
+// middleware to get shows a user has selected / saved, using the user's username, to populate the user's dashboard, queries db using username 
+app.get('/shows/:username', show.getUserSavedShows, (req, res) => {
+  console.log('from the /shows/:username route handler, res.locals.savedShows:', res.locals.savedShows);
+  return res.status(200).send(res.locals.savedShows);
+});
+
 app.get('/shows/:id', show.getShowSeasons, (req, res) => {
   return res.status(200).send(res.locals.result);
 });

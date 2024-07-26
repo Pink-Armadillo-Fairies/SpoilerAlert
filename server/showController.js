@@ -1,5 +1,12 @@
 const db = require('./db_config.js');
 
+// middleware to get shows a user has been using / watching
+// this will be used to populate the user's dashboardf
+
+
+
+
+
 const show = {
   getShows: async (req, res, next) => {
     try {
@@ -21,6 +28,63 @@ const show = {
         message: { err: 'get shows failed, check server log for details' },
       };
       return next(errObj);
+    }
+  },
+
+  getUserSavedShows: async (req, res, next) => {
+    try {
+      const username = req.params.username; // get username from request
+  
+      if (!username) {
+        return next({
+          log: 'from the getUserSavedShows function: No username was provided',
+          status: 400,
+          message: { err: 'No username provided using getUserSavedShows' },
+        });
+      }
+
+      // get user id with username
+      const  userQuery = `
+      SELECT id FROM users WHERE username = $1
+      `;
+          
+      const userIdResult = await db.oneOrNone(userQuery, [username]);
+
+      if (!userIdResult) {
+        return next({
+          log: 'from getUserSavedShows function: No user found',
+          status: 404,
+          message: { err: 'No user found when querying db with user name'}
+        })
+      }
+
+      const userId = userIdResult.id;
+  
+      const showsQuery = `
+        SELECT DISTINCT s.id, s.title, s.created_at
+        FROM shows s
+        INNER JOIN user_shows us ON s.id = us.show_id
+        WHERE us.user_id = $1
+      `;
+  
+      const result = await db.any(query, [userId]); // input username and query to get shows
+      
+      if(!result || result.length === 0) {
+        return next({
+          log: 'from the getUserSavedShows function: No shows found in the database',
+          status: 404,
+          message: { err: 'No shows found using getUserSavedShows' },
+        });
+      }
+  
+      res.locals.savedShows = result;
+      return next();
+    } catch (err) {
+      return next({
+        log: `getUserSavedShows didnt work: ${err}`,
+        status: 500,
+        message: { err: 'getUserSavedShows didnt work at third error handler, could not get user saved shows' },
+      });
     }
   },
 
