@@ -3,6 +3,7 @@ const db = require('./db_config.js');
 const show = {
   getShows: async (req, res, next) => {
     try {
+      console.log('get show is hit')
       const result = await db.any('select * from "shows"');
 
       if (!result || result.length === 0) {
