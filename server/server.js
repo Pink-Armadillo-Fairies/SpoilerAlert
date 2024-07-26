@@ -26,6 +26,20 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '../build/index.html'))
 ); // Serve from the current directory
 
+
+// TEST ROUTE FOR API CALL
+
+app.get('/searchshows', show.searchShows, show.createShow, (req, res) =>{
+  return res.status(200).json(res.locals.show);
+})
+
+
+
+
+
+
+
+
 /* test routes for db 
 //test routing to see if db query middleware works
 app.get('/test', testMiddleware.sqlGetTest, (req, res) =>
