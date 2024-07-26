@@ -36,7 +36,7 @@ const LoginForm = () => {
       });
       if (response.ok) {
         dispatch(successfulLogin(loginInput.usernameInput));
-        navigate('/mainpage');
+        navigate('/dashboard');
       } else {
         dispatch(failedLogin(loginInput.usernameInput));
         console.error('Login failed');
