@@ -48,10 +48,10 @@ const show = {
       // const {title, photoURL, } = res.locals.show
       //const title = res.locals.show.name;
       //Column name in DB is 'title', response from API is 'name'
-      const {name, image} = res.locals.show;
-      console.log(name, image.medium);
+      const {name, image, id} = res.locals.show;
+      //console.log(name, image.medium, id);
       const result = await db.none(
-        `INSERT INTO shows (title, image) VALUES ('${name}', '${image.medium}' )`
+        `INSERT INTO shows (title, image, tvmaze_id) VALUES ('${name}', '${image.medium}', '${id}' )`
       );
       return next();
     } catch (err) {
@@ -66,9 +66,9 @@ const show = {
   searchShows: async (req, res, next) => {
     try {
       // TO-DO: update search to be the value we receive from the search input
-      const searchInput = 'breaking bad';
+      const searchInput = 'mandolorian';
       const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${searchInput}`);
-      console.log('response', response);
+      //console.log('response', response);
 
       let data = await response.json();
 

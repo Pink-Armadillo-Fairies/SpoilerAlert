@@ -15,22 +15,56 @@ const season = {
     }
   },
 
+/*
+1. Fetch the seasons from the api
+2. For in loop, through 
+
+
+
+
+
+*/
+
   createSeason: async (req, res, next) => {
-    try {
-      const number = req.body.number;
-      const show = req.body.show;
-      const result = await db.none(
-        `INSERT INTO seasons (number, show) VALUES ('${number}', '${show}')`
-      );
-      return next();
-    } catch (err) {
-      const errObj = {
-        log: `create season failed: ${err}`,
-        message: { err: 'create season failed, check server log for details' },
-      };
-      return next(errObj);
+      try {
+        // TO-DO: update search to be the value we receive from the search input
+        const tvMazeId = res.locals.show.id;
+
+        // fetching the seasons based on tvMazeId
+        const response = await fetch(`https://api.tvmaze.com/shows/${tvMazeId}/seasons`);
+  
+        let data = await response.json();
+
+        // getting the primary key id from shows table based on finding a match for tvMazeId
+        let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);
+       
+        
+        res.locals.seasons = data;
+
+        // Loop through seasons, create a row for each one
+        
+        for (const season of data) {
+
+          console.log(`season.number: `, season.number,`showId: `, showId);
+
+          const result = await db.none(
+            `INSERT INTO seasons (number, show) VALUES ('${season.number}', '${showId[0].id}' )`
+          );
+        }
+
+      
+    
+      
+        next();      
+  
+      } catch (err) {
+        const errObj = {
+          log: `create season failed: ${err}`,
+          message: { err: 'search show failed, check server log for details' },
+        };
+        return next(errObj);
+      }
     }
-  },
-};
+  };
 
 module.exports = season;
