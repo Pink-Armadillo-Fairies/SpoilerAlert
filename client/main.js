@@ -11,10 +11,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import LoginForm from './components/LoginForm.jsx';
 import Signup from './components/Signup.jsx';
 import MainPage from './components/MainPage.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import AddShow from './components/AddShow.jsx';
 
 //to include bootstrap styling uncomment this line:
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import Dashboard from './components/Dashboard.jsx';
+
 
 
 const router = createBrowserRouter(
@@ -34,7 +36,12 @@ const router = createBrowserRouter(
      {path: '/dashboard',
      element: <Dashboard/>,
      children: [],
+    },
+    {path: '/addshow',
+      element: <AddShow/>,
+      children: [],
     }
+
   ])
 
 
