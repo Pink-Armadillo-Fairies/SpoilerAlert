@@ -62,7 +62,7 @@ const Signup = () => {
           // const responseData = await response.json();
           // console.log('verifyUser Response:', responseData);
           dispatch(successfulLogin(loginInput.usernameInput))
-          navigate('/mainpage');
+          navigate('/dashboard');
         } else {
           console.error('Sign up failed');
         }
