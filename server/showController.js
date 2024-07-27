@@ -10,6 +10,7 @@ const db = require('./db_config.js');
 const show = {
   getShows: async (req, res, next) => {
     try {
+      console.log('get show is hit')
       const result = await db.any('select * from "shows"');
 
       if (!result || result.length === 0) {
@@ -109,9 +110,13 @@ const show = {
 
   createShow: async (req, res, next) => {
     try {
-      const title = req.body.title;
+      // const {title, photoURL, } = res.locals.show
+      //const title = res.locals.show.name;
+      //Column name in DB is 'title', response from API is 'name'
+      const {name, image, id} = res.locals.show;
+      //console.log(name, image.medium, id);
       const result = await db.none(
-        `INSERT INTO shows (title) VALUES ('${title}')`
+        `INSERT INTO shows (title, image, tvmaze_id) VALUES ('${name}', '${image.medium}', '${id}' )`
       );
       return next();
     } catch (err) {
@@ -122,6 +127,28 @@ const show = {
       return next(errObj);
     }
   },
+
+  searchShows: async (req, res, next) => {
+    try {
+      // TO-DO: update search to be the value we receive from the search input
+      const searchInput = 'mandolorian';
+      const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${searchInput}`);
+      //console.log('response', response);
+
+      let data = await response.json();
+
+      res.locals.show = data;
+    
+      next();      
+
+    } catch (err) {
+      const errObj = {
+        log: `search show failed: ${err}`,
+        message: { err: 'search show failed, check server log for details' },
+      };
+      return next(errObj);
+    }
+  }
 };
 
 module.exports = show;
