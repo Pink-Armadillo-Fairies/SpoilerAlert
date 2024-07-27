@@ -28,40 +28,41 @@ const show = {
 
   getUserSavedShows: async (req, res, next) => {
     try {
-      const username = req.params.username; // get username from request
-  
-      if (!username) {
+      // const user_id = req.params.user_id; // get username from request
+      const userId = req.query.ssid;
+      console.log('server side userId is', userId);
+      if (!userId) {
         return next({
-          log: 'from the getUserSavedShows function: No username was provided',
+          log: 'from the getUserSavedShows function: No user_id was provided',
           status: 400,
-          message: { err: 'No username provided using getUserSavedShows' },
+          message: { err: 'No user_id provided using getUserSavedShows' },
         });
       }
-      console.log('username: ', username);
-      // get user id with username
-      const  userQuery = `
-      SELECT id FROM users WHERE username = $1
-      `;
+      // console.log('user_id: ', user_id);
+      // // get user id with username
+      // const  userQuery = `
+      // SELECT id FROM users WHERE user_id = $1
+      // `;
           
-      const userIdResult = await db.oneOrNone(userQuery, [username]);
-      console.log('iserIdResult: ', userIdResult);
-      if (!userIdResult) {
-        return next({
-          log: 'from getUserSavedShows function: No user found',
-          status: 404,
-          message: { err: 'No user found when querying db with user name'}
-        })
-      }
+      // const userIdResult = await db.oneOrNone(userQuery, [user_id]);
+      // console.log('iserIdResult: ', userIdResult);
+      // if (!userIdResult) {
+      //   return next({
+      //     log: 'from getUserSavedShows function: No user found',
+      //     status: 404,
+      //     message: { err: 'No user found when querying db with user name'}
+      //   })
+      // }
 
-      const userId = userIdResult.id;
-      console.log('const userId = userIdResult.id, userId: ', userId);
+      // const userId = userIdResult.id;
+      // console.log('const userId = userIdResult.id, userId: ', userId);
       const showsQuery = `
         SELECT DISTINCT s.id, s.title, s.created_at, s.image
         FROM shows s
         INNER JOIN user_shows us ON s.id = us.show_id
         WHERE us.user_id = $1
       `;
-  
+      console.log('line 65', userId)
       const result = await db.any(showsQuery, [userId]); // input username and query to get shows
       console.log('const result = await db.any(query, [userId]), result: ', result );
       if(!result || result.length === 0) {
