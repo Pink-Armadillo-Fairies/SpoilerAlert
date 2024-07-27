@@ -67,7 +67,9 @@ const show = {
   searchShows: async (req, res, next) => {
     try {
       // TO-DO: update search to be the value we receive from the search input
-      const searchInput = 'mandolorian';
+
+      // const searchInput = 'mandolorian';
+      const searchInput = req.query.searchQuery;
       const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${searchInput}`);
       //console.log('response', response);
 
