@@ -16,23 +16,61 @@ const episode = {
     }
   },
 
-  createEpisode: async (req, res, next) => {
-    try {
-      const number = req.body.number;
-      const title = req.body.title;
-      const seasonID = req.body.seasonID;
-      const result = await db.none(
-        `INSERT INTO episodes (number, title, season) VALUES ('${number}', '${title}', '${seasonID}')`
-      );
-      return next();
-    } catch (err) {
-      const errObj = {
-        log: `create episode failed: ${err}`,
-        message: { err: 'create episode failed, check server log for details' },
-      };
-      return next(errObj);
-    }
-  },
+
+  // TO-DO : improve performance so we insert all rows at once instead of in a for loop
+  
+  createEpisodes: async (req, res, next) => {
+      try {
+        // TO-DO: update search to be the value we receive from the search input
+        const tvMazeId = res.locals.show.id;
+  
+        // fetching the seasons based on tvMazeId
+        const response = await fetch(`https://api.tvmaze.com/shows/${tvMazeId}/episodes`);
+
+        console.log("createEpsiodes API worked")
+  
+        let data = await response.json();
+  
+        let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);
+
+        console.log(`showId: `, showId);
+        
+        
+        
+
+        //console.log(`seasons: `, seasons)
+        
+        res.locals.episodes = data;
+        
+        for (const episode of data) {
+
+          //gets season id for current episode in loop
+          let seasonId = await db.one(
+            `SELECT s.id
+            FROM seasons s
+            JOIN shows sh ON s.show = sh.id
+            WHERE sh.id= ${showId[0].id} AND s.number = ${episode.season}`);
+          //console.log(`seasonid: `, seasonId);
+  
+          //console.log(`episode.name: `, episode.name,`episode.number: `, episode.number);
+  
+          //inserts episode into episode table with correct season id
+          const result = await db.none(
+            `INSERT INTO episodes (episode_name, episode_number, season_id) VALUES ($1, $2, $3)`,
+            [episode.name, episode.number, seasonId.id]
+          );
+        }
+      
+        next();      
+  
+      } catch (err) {
+        const errObj = {
+          log: `create episodes failed: ${err}`,
+          message: { err: 'create episodes failed, check server log for details' },
+        };
+        return next(errObj);
+      }
+    },
 
   saveView: async (req, res, next) => {
     try {
