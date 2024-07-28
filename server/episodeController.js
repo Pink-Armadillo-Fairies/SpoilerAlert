@@ -4,6 +4,13 @@ const { escape } = require('sqlstring');
 const episode = {
   getEpisodes: async (req, res, next) => {
     try {
+
+      if (res.locals.isShowInDB !== null) {
+        console.log('episodes in db')
+        return next();
+      };
+
+
       const result = await db.any('select * from "episodes"');
       res.locals.result = result;
       return next();
@@ -21,6 +28,12 @@ const episode = {
   
   createEpisodes: async (req, res, next) => {
       try {
+
+        if (res.locals.isShowInDB !== null) {
+          console.log('episodes in db')
+          return next();
+        };
+
         // TO-DO: update search to be the value we receive from the search input
         const tvMazeId = res.locals.show.id;
   
@@ -44,15 +57,20 @@ const episode = {
         
         for (const episode of data) {
 
-          //gets season id for current episode in loop
-          let seasonId = await db.one(
-            `SELECT s.id
-            FROM seasons s
-            JOIN shows sh ON s.show = sh.id
-            WHERE sh.id= ${showId[0].id} AND s.number = ${episode.season}`);
+          //gets season id for current episode in loop if episode number is 1 to limit db calls
+          if (episode.number == 1) {
+
+            let seasonId = await db.one(
+              `SELECT s.id
+              FROM seasons s
+              JOIN shows sh ON s.show = sh.id
+              WHERE sh.id= ${showId[0].id} AND s.number = ${episode.season}`);
+
+          };
           //console.log(`seasonid: `, seasonId);
   
           //console.log(`episode.name: `, episode.name,`episode.number: `, episode.number);
+          
   
           //inserts episode into episode table with correct season id
           const result = await db.none(
