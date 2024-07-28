@@ -29,7 +29,7 @@ app.get('/', (req, res) =>
 
 // TEST ROUTE FOR API CALL
 
-app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, (req, res) =>{
+app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, episode.createEpisodes, (req, res) =>{
   console.log(res.locals.show);
   return res.status(200).json(res.locals.show);
 })
@@ -53,19 +53,19 @@ app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) =>
 */
 
 // user routes
-app.get('/users', user.getUsers, (req, res) => {
-  return res.status(200).send(res.locals.result);
-});
+// app.get('/users', user.getUsers, (req, res) => {
+//   return res.status(200).send(res.locals.result);
+// });
 
-// app.post('/users/', user.createUser, (req, res) => res.sendStatus(201)); // -> seems not necessary. to be removed. 
+// // app.post('/users/', user.createUser, (req, res) => res.sendStatus(201)); // -> seems not necessary. to be removed. 
 
-app.post('/users/login', user.verifyUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
-  return res.status(200).send('Successful login');
-})
+// app.post('/users/login', user.verifyUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
+//   return res.status(200).send('Successful login');
+// })
 
-app.post('/users/signup', user.createUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
-  return res.status(200).send('Successful Signup');
-})
+// app.post('/users/signup', user.createUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
+//   return res.status(200).send('Successful Signup');
+// })
 
 // show routes
 // app.get('/shows', show.getShows, (req, res) => {
@@ -78,29 +78,29 @@ app.get('/shows', show.getUserSavedShows, (req, res) => {
   return res.status(200).send(res.locals.savedShows);
 });
 
-app.get('/shows/:id', show.getShowSeasons, (req, res) => {
-  return res.status(200).send(res.locals.result);
-});
+// // app.get('/shows/:id', show.getShowSeasons, (req, res) => {
+// //   return res.status(200).send(res.locals.result);
+// // });
 
-app.post('/shows/', show.createShow, (req, res) => res.sendStatus(201));
+// //app.post('/shows/', show.createShow, (req, res) => res.sendStatus(201));
 
-// season routes
-app.get('/seasons', season.getSeasons, (req, res) => {
-  return res.status(200).send(res.locals.result);
-});
+// // season routes
+// app.get('/seasons', season.getSeasons, (req, res) => {
+//   return res.status(200).send(res.locals.result);
+// });
 
-app.post('/seasons/', season.createSeason, (req, res) => res.sendStatus(201));
+//app.post('/seasons/', season.createSeason, (req, res) => res.sendStatus(201));
 
 // episode routes
-app.get('/episodes', episode.getEpisodes, (req, res) => {
-  return res.status(200).send(res.locals.result);
-});
+// app.get('/episodes', episode.getEpisodes, (req, res) => {
+//   return res.status(200).send(res.locals.result);
+// });
 
-app.post('/episodes/', episode.createEpisode, (req, res) =>
-  res.sendStatus(201)
-);
+// app.post('/episodes/', episode.createEpisode, (req, res) =>
+//   res.sendStatus(201)
+// );
 
-app.post('/saveview', episode.saveView, (req,res)=> res.status(275).send(res.locals.watchParty))
+// app.post('/saveview', episode.saveView, (req,res)=> res.status(275).send(res.locals.watchParty))
 
 // catch-all route handler for any requests to an unknown route
 app.use('*', (req, res) => {

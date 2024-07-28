@@ -15,16 +15,6 @@ const season = {
     }
   },
 
-/*
-1. Fetch the seasons from the api
-2. For in loop, through 
-
-
-
-
-
-*/
-
   createSeason: async (req, res, next) => {
       try {
         // TO-DO: update search to be the value we receive from the search input
@@ -45,16 +35,13 @@ const season = {
         
         for (const season of data) {
 
-          console.log(`season.number: `, season.number,`showId: `, showId);
+          // console.log(`season.number: `, season.number,`showId: `, showId[0].id);
 
           const result = await db.none(
             `INSERT INTO seasons (number, show) VALUES ('${season.number}', '${showId[0].id}' )`
           );
         }
-
-      
-    
-      
+        console.log("hitting next in createSeason");
         next();      
   
       } catch (err) {
