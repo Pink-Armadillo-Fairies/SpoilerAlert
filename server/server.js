@@ -27,14 +27,18 @@ app.get('/', (req, res) =>
 ); // Serve from the current directory
 
 
-// TEST ROUTE FOR API CALL
+// ROUTE for saving show data in the DB
 
 app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, episode.createEpisodes, (req, res) =>{
-  console.log(res.locals.isShowInDB);
+  //console.log(res.locals.isShowInDB);
   return res.status(200).json(res.locals.show);
 })
 
 
+app.post('/saveusershow', user.saveShow, (req, res) =>{
+  console.log("passed the saveShow middleware");
+  return res.status(200).send('success');
+})
 
 
 

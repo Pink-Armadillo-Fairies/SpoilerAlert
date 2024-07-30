@@ -6,7 +6,7 @@ const episode = {
     try {
 
       if (res.locals.isShowInDB !== null) {
-        console.log('episodes in db')
+        
         return next();
       };
 
@@ -30,7 +30,7 @@ const episode = {
       try {
 
         if (res.locals.isShowInDB !== null) {
-          console.log('episodes in db')
+          
           return next();
         };
 
@@ -40,42 +40,40 @@ const episode = {
         // fetching the seasons based on tvMazeId
         const response = await fetch(`https://api.tvmaze.com/shows/${tvMazeId}/episodes`);
 
-        console.log("createEpsiodes API worked")
+        
   
         let data = await response.json();
   
         let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);
 
-        console.log(`showId: `, showId);
-        
-        
         
 
-        //console.log(`seasons: `, seasons)
+        
         
         res.locals.episodes = data;
         
         for (const episode of data) {
 
-          //gets season id for current episode in loop if episode number is 1 to limit db calls
-          if (episode.number == 1) {
-
+          //gets season id for current episode in loop if episode number is 1 to limit db calls, figure out way to limit db queries between loops
+          // if (episode.number == 1) {
+          // };
+            //console.log('episode.number', episode.number)
+            
             let seasonId = await db.one(
               `SELECT s.id
               FROM seasons s
               JOIN shows sh ON s.show = sh.id
               WHERE sh.id= ${showId[0].id} AND s.number = ${episode.season}`);
-
-          };
-          //console.log(`seasonid: `, seasonId);
+              
+              //console.log(`seasonId: `, seasonId);
   
           //console.log(`episode.name: `, episode.name,`episode.number: `, episode.number);
           
-  
+            //console.log(`seasonId.id: `, seasonId.id);
           //inserts episode into episode table with correct season id
           const result = await db.none(
-            `INSERT INTO episodes (episode_name, episode_number, season_id) VALUES ($1, $2, $3)`,
-            [episode.name, episode.number, seasonId.id]
+            `INSERT INTO episodes (episode_name, episode_number, season_id, show_name) VALUES ($1, $2, $3, $4)`,
+            [episode.name, episode.number, seasonId.id, res.locals.show.name]
           );
         }
       
