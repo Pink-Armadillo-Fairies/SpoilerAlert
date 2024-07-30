@@ -73,7 +73,7 @@ const AddShow = () => {
     // prevent the page from being reloaded
     e.preventDefault(); 
     try {
-      const response = await fetch('/', {
+      const response = await fetch('/xxxx', { //TODO: update the endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
