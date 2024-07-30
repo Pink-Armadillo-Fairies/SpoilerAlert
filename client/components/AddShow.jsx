@@ -4,6 +4,23 @@ import { Card, CardGroup, Form, Container, Button } from 'react-bootstrap';
 
 // NOTE: we do not currently use redux store in this component. 
 const AddShow = () => {
+
+  function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+  
+    for(let i = 0; i < cookieArr.length; i++) {
+      let cookiePair = cookieArr[i].split("=");
+  
+      if(name == cookiePair[0].trim()) {
+        return decodeURIComponent(cookiePair[1]);
+      }
+    }
+    return null;
+  }
+
+  const ssid = getCookie('ssid');
+  console.log('ssid', ssid)
+
   // state to user's input in the search bar 
   const [userInput, setUserInput] = useState({
     searchQuery: '',
