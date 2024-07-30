@@ -7,14 +7,14 @@ import Comment from './Comment.jsx'
 const Show = () => {
   // variable to store a show_id from path param or query param 
   // TO DO: dynamically get show_id from a previous page (dashbaord)
-  const show_id = 100; // use '100' to get 'The office' show data for test 
+  const show_id = 129; // use '110' to get 'Lost' show data for test 
 
   // state to save a show information 
   const [showInfo, setShowInfo] = useState({
     id: null,
-    name: '',
+    title: '',
     image: '',
-    season_episode: {}, // nested object to save 1) season (key) and 2) object (value) of episode number + episode title 
+    seasonEpisode: [],  
   });
 
   // state to track user inputs from pull-down to select season/episode 
@@ -27,19 +27,25 @@ const Show = () => {
   // TODO: if a user can make a comment for selected season/episode in the comment box, add selected season/episode to the state
   const [commentInput, setCommentInput] = useState('');
 
-  // useEffect to send a GET request to /xxx to get show information by passing show_id 
+  // TODO: have a state to track user input for watch history...?
+  const [watchInput, setWatchInput] = useState({
+    season: null,
+    episode: null,
+  });
+
+  // useEffect to send a GET request to /getshow API to get show information by passing show_id 
   useEffect(()=> {
     const fetchShowData = async () => {
       try {
-        const response = await fetch(`/xxx?xx=${show_id}`); // TO DO: confirm endpoint 
+        const response = await fetch(`/getshow?show_id=${show_id}`); // TO DO: confirm endpoint 
         const result = await response.json();
         // TO DO: update property name based on API's response format 
         setShowInfo({
           ...showInfo,
           id: result.id,
-          name: result.name,
+          title: result.title,
           image: result.image,
-          season_episode: result.season_episode, 
+          seasonEpisode: result.seasonEpisode, 
         }); 
       } catch (error) {
         console.log('Fetch error');
@@ -48,7 +54,13 @@ const Show = () => {
     fetchShowData();
   }, []);
 
-  // function to track user inputs from pull-down, and save them to state  
+  // useEffect to send a GET request to /xxx API to see if a user has watchHistory & update the state. 
+
+
+
+  console.log('showInfo is', showInfo)
+
+  // function to track user inputs from pull-down 
   const handleWatchHistory = () => {
     // take user's input from pulldown and update state 
     
@@ -75,8 +87,8 @@ const Show = () => {
 
   return (
     <Container>
-
-
+      <p>{showInfo.title}</p>
+      <img src={showInfo.image}></img>
       {/* render Comment component. Passing show id, season and episode, and user's progress as props */}
       <Comment />
     </Container>

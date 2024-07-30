@@ -27,7 +27,7 @@ const WatchParty = () => {
     ? (maxCache[el.user] = viewOrder)
     : (maxCache[el.user] = Math.max(maxCache[el.user], viewOrder));
     
-    
+
     //add the view to the party array along with the viewOrder value
     party.push({ ...el, viewOrder });
   });

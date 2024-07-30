@@ -34,6 +34,10 @@ app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, 
   return res.status(200).json(res.locals.show);
 })
 
+// route to get a show information from DB 
+app.get('/getshow', show.getShow, (req, res) => {
+  return res.status(200).json(res.locals.showInfo);
+})
 
 
 
