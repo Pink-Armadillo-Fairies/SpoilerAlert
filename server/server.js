@@ -30,7 +30,7 @@ app.get('/', (req, res) =>
 // TEST ROUTE FOR API CALL
 
 app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, episode.createEpisodes, (req, res) =>{
-  console.log(res.locals.show);
+  console.log(res.locals.isShowInDB);
   return res.status(200).json(res.locals.show);
 })
 

@@ -111,9 +111,19 @@ const show = {
       //Column name in DB is 'title', response from API is 'name'
       const {name, image, id} = res.locals.show;
       //console.log(name, image.medium, id);
-      const result = await db.none(
-        `INSERT INTO shows (title, image, tvmaze_id) VALUES ('${name}', '${image.medium}', '${id}' )`
-      );
+      //have if clause to query db before api fetch
+      const isShowInDB = await db.oneOrNone('SELECT * FROM shows WHERE title = $1', [name]);
+      console.log('is show in db', isShowInDB);
+      if (isShowInDB !== null) {
+        console.log('show exist in DB');
+        res.locals.isShowInDB = isShowInDB;
+        return next();
+      
+      }
+    
+    const result = await db.none(
+      `INSERT INTO shows (title, image, tvmaze_id) VALUES ('${name}', '${image.medium}', '${id}' )`);
+
       return next();
     } catch (err) {
       const errObj = {
