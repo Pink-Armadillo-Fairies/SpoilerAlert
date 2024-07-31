@@ -18,17 +18,19 @@ const Show = () => {
     seasons: [],
   });
 
-  // // state to store the user's watch history
-  // const [watchHistory, setWatchHistory] = useState({
-  //   season: null,
-  //   episode: null,
+  /* use this 'watchHistory' state if we want to separate states to manage 'save watch history' and 'make comment'
+  // state to store the user's watch history
+  const [watchHistory, setWatchHistory] = useState({
+    season: null,
+    episode: null,
   // });
-  
+  */
+
   // state to save user's comments for selected season/episode 
-  // TODO: if we allow a user to make a comment for selected season/episode in the comment box, add selected season/episode to the state
   const [commentInput, setCommentInput] = useState('');
 
-  // TODO ?: have anoter state to track user input for watch history
+  // state to save user input of watch history (season and episode) from pull-downs. 
+  // this state is also reffered to 1) save user's watch history and 2) make a comment to a show
   const [watchHistoryInput, setWatchHistoryInput] = useState({
     season: null,
     episode: null,
@@ -55,15 +57,15 @@ const Show = () => {
     fetchShowData();
   }, [show_id]); // re-fetches data if show_id changes
 
-  // useEffect to send a GET request to /xxx API to see if a user has watchHistory & update 'watchHistory' state 
+  // useEffect to send a GET request to /xxx API to see if a user has watchHistory, and update 'watchHistoryInput' state 
   useEffect(()=> {
     const fetchWatchHistory = async () => {
       try {
         const response = await fetch(`/xxx?show_id=${show_id}`); // TO DO: confirm endpoint 
         const result = await response.json();
         // TODO: update property name based on API's response format 
-        setWatchHistory({
-          ...watchHistory,
+        setWatchHistoryInput({
+          ...watchHistoryInput,
           // TODO: update season and episode 
           // season: '1',
           // episode: '1',
@@ -73,7 +75,7 @@ const Show = () => {
       }
     };
     fetchWatchHistory();
-  }, []);
+  }, []); // call the function only once when the component mounts. 
 
   // function to track user inputs from pull-down and update 'watchHistoryInput' state 
   const handleWatchHistoryInput = (e, field) => {
@@ -85,11 +87,12 @@ const Show = () => {
 
   // function to track user inputs from comment box, and save them to 'commentInput' state 
   const handleCommentInput = (e) => {
-    setCommentInput(e.value);
+    setCommentInput(e.target.value);
   }
   
   // function to send a POST request to save user's watch history (season/episode) to database
   const handleSaveWatchHistory = async () => {
+    e.preventDefault();
     try{
       const placeData = {
         showId: show_id,
@@ -118,7 +121,7 @@ const Show = () => {
   const handleSaveComment = async () => {
     try {
       const commentInfo = {
-        comment: commentInput,
+        body: commentInput,
         show_id: show_id,
         season: watchHistoryInput.season,
         episode: watchHistoryInput.episode,
@@ -220,7 +223,7 @@ const Show = () => {
 
       {/* add comment box - pulldown to select season/episode to add comments */}
       <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Comment to the show:</h4>
-      <Form onsubmit={handleSaveComment}>
+      <Form onSubmit={handleSaveComment}>
         <Form.Group 
           controlId="commentBox" 
           style={{
