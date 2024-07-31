@@ -40,6 +40,12 @@ app.get('/getshow', show.getShow, (req, res) => {
   return res.status(200).json(res.locals.showInfo);
 })
 
+// route for saving the season/episode a user is on
+
+app.post('/saveplace', show.savePlace, (req, rest) => {
+  return res.status(200).json(res.locals.showPlace);
+})
+
 app.post('/saveusershow', user.saveShow, (req, res) =>{
   console.log("passed the saveShow middleware");
   return res.status(200).send('success');
