@@ -50,7 +50,9 @@ const Dashboard = () => {
                 <Card className="m-2">
                   <Card.Img variant="top" src={show.image} alt={show.title} className="card-img-top" />
                   <Card.Body>
-                    <Card.Title>{show.title}</Card.Title>
+                    <Link to={`/show?id=${show.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <Card.Title>{show.title}</Card.Title>
+                    </Link>
                   </Card.Body>
                 </Card>
               </Col>
