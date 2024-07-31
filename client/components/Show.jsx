@@ -1,13 +1,18 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { Form, Container, Button, Card } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import '../../client/styles.css';
 import Comment from './Comment.jsx'
 
 const Show = () => {
-  // variable to store a show_id from path param or query param 
-  // TO DO: dynamically get show_id from a previous page (dashbaord)
-  const show_id = 133; // use static number for testing
+  // get show's id from query paramter 
+  const location = useLocation(); 
+  // Use URLSearchParams to parse the query string
+  const queryParams = new URLSearchParams(location.search);
+  const show_id = queryParams.get('id');
+
+  // const show_id = 133; // use static number for testing
 
   // state to save a show information 
   const [showInfo, setShowInfo] = useState({
@@ -151,105 +156,105 @@ const Show = () => {
   console.log('watchHistoryInput state is ', watchHistoryInput)
   console.log('commentInput state is: ', commentInput)
 
-  return (
-    <Container>
-      {/* display a show information */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: '1rem',
-        marginBottom: '1rem'
-      }}>
-        <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>You are watching:</h4>
-        <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
-          <Card.Img 
-            variant="top" 
-            src={showInfo.image} 
-            alt="Show image" 
-            style={{ 
-              maxWidth: '100%', 
-              maxHeight: '600px', 
-              height: 'auto' 
-            }} 
-          />
-          <Card.Body>
-            <Card.Title style={{ fontFamily: "Ubuntu Condensed" }}>{showInfo.title}</Card.Title>
-          </Card.Body>
-        </Card>
-      </div>
-
-      {/* display drop-down and save a user watch history (season and episode) */}
-      <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Add your watch history:</h4>
-      <Form onSubmit={handleSaveWatchHistory}>
-        <Form.Select 
-          value={watchHistoryInput.season}
-          onChange={(e) => handleWatchHistoryInput(e, 'season')}
-          style={{ marginBottom: '10px' }}
-        >
-          <option value="">Select Season</option>
-          {showInfo.seasons.map((num) => (
-            <option key={num} value={num}>
-              {num}
-            </option>
-          ))}
-        </Form.Select>
-        {watchHistoryInput.season && (
+  return (<Container>
+    {/* guide a user to dashboard if no show is selected */}
+    {!show_id ? (
+      <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '1.2rem' }}>No show selected. Please choose a show from the dashboard.</p>
+    ) : (
+      <>
+        {/* display a show information */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginTop: '1rem',
+          marginBottom: '1rem'
+        }}>
+          <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>You are watching:</h4>
+          <Card style={{ marginTop: '1rem', marginBottom: '1rem', textAlign: 'center' }}>
+            <Card.Img 
+              variant="top" 
+              src={showInfo.image} 
+              alt="Show image" 
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '600px', 
+                height: 'auto' 
+              }} 
+            />
+            <Card.Body>
+              <Card.Title style={{ fontFamily: "Ubuntu Condensed" }}>{showInfo.title}</Card.Title>
+            </Card.Body>
+          </Card>
+        </div>
+  
+        {/* display drop-down and save a user watch history (season and episode) */}
+        <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Add your watch history:</h4>
+        <Form onSubmit={handleSaveWatchHistory}>
           <Form.Select 
-          value={watchHistoryInput.episode}
-          onChange={(e) => handleWatchHistoryInput(e, 'episode')}
-          style={{ marginBottom: '10px' }}
-        >
-          <option value="">Select Episode</option>
-          {showInfo.allEpisodeList
-            .filter(episode => episode.season_number === watchHistoryInput.season)
-            .map((episode) => (
-              <option key={episode.episode_number} value={episode.episode_number}>
-                {episode.episode_number}:  {episode.episode_name}
+            value={watchHistoryInput.season}
+            onChange={(e) => handleWatchHistoryInput(e, 'season')}
+            style={{ marginBottom: '10px' }}
+          >
+            <option value="">Select Season</option>
+            {showInfo.seasons.map((num) => (
+              <option key={num} value={num}>
+                {num}
               </option>
-            ))
-          }
+            ))}
           </Form.Select>
+          {watchHistoryInput.season && (
+            <Form.Select 
+            value={watchHistoryInput.episode}
+            onChange={(e) => handleWatchHistoryInput(e, 'episode')}
+            style={{ marginBottom: '10px' }}
+          >
+            <option value="">Select Episode</option>
+            {showInfo.allEpisodeList
+              .filter(episode => episode.season_number === watchHistoryInput.season)
+              .map((episode) => (
+                <option key={episode.episode_number} value={episode.episode_number}>
+                  {episode.episode_number}:  {episode.episode_name}
+                </option>
+              ))
+            }
+            </Form.Select>
+          )}
+          
+          <Button 
+            type="submit" 
+            disabled={!watchHistoryInput.season || !watchHistoryInput.episode}
+          >
+            Save
+          </Button>
+        </Form>
+  
+        {/* add comment box - pulldown to select season/episode to add comments */}
+        <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Comment to the show:</h4>
+        <Form onSubmit={handleSaveComment}>
+          <Form.Group controlId="commentBox">
+            <Form.Control as="textarea" rows={3} value={commentInput} onChange={handleCommentInput} />
+          </Form.Group>
+          <Button 
+            type="submit" 
+            disabled={!commentInput}
+          >
+            Save
+          </Button>
+        </Form>
+  
+        {/* render Comment component */}      
+        {watchHistoryInput.season && (
+          <Comment 
+            showId={show_id} 
+            season={watchHistoryInput.season} 
+            episode={watchHistoryInput.episode} 
+          />
         )}
-        
-        <Button 
-          type="submit" 
-          disabled={!watchHistoryInput.season || !watchHistoryInput.episode}
-        >
-          Save
-        </Button>
-      </Form>
-
-      {/* add comment box - pulldown to select season/episode to add comments */}
-      <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Comment to the show:</h4>
-      <Form onSubmit={handleSaveComment}>
-        <Form.Group 
-          controlId="commentBox" 
-          style={{
-
-          }}>
-          <Form.Control as="textarea" rows={3} value={commentInput} onChange={handleCommentInput} />
-          {/* <Button onClick={handleSaveComment}>Comment</Button> */}
-        </Form.Group>
-        <Button 
-          type="submit" 
-          disabled={!commentInput}
-        >
-          Save
-        </Button>
-
-      </Form>
-      {/* render Comment component */}      
-      {watchHistoryInput.season && (
-        <Comment 
-          showId={show_id} 
-          season={watchHistoryInput.season} 
-          episode={watchHistoryInput.episode} 
-        />
-      )}
-
-    </Container>
+      </>
+    )}
+  </Container>
   )
 }
 
