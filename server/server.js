@@ -11,6 +11,7 @@ const season = require('./seasonController.js');
 const episode = require('./episodeController.js');
 const session = require('./controllers/sessionController.js');
 const cookie = require('./controllers/cookieController.js');
+const comment = require('/commentController.js');
 
 app.use(express.static(path.resolve(__dirname, '../build')));
 
@@ -27,10 +28,10 @@ app.get('/', (req, res) =>
 ); // Serve from the current directory
 
 
-// TEST ROUTE FOR API CALL
+// ROUTE for saving show data in the DB
 
 app.get('/searchshows', show.searchShows, show.createShow, season.createSeason, episode.createEpisodes, (req, res) =>{
-  console.log(res.locals.isShowInDB);
+  //console.log(res.locals.isShowInDB);
   return res.status(200).json(res.locals.show);
 })
 
@@ -39,9 +40,15 @@ app.get('/getshow', show.getShow, (req, res) => {
   return res.status(200).json(res.locals.showInfo);
 })
 
+app.post('/saveusershow', user.saveShow, (req, res) =>{
+  console.log("passed the saveShow middleware");
+  return res.status(200).send('success');
+})
 
 
-
+app.get('/getcomments', comment.getComments, (req, res) => {
+  return res.status(200).json(res.locals.comments);
+})
 
 
 

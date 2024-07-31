@@ -73,7 +73,8 @@ const AddShow = () => {
     // prevent the page from being reloaded
     e.preventDefault(); 
     try {
-      const response = await fetch('/xxxx', { //TODO: update the endpoint
+      
+      const response = await fetch(`/saveusershow`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -17,6 +17,12 @@ const season = {
 
   createSeason: async (req, res, next) => {
       try {
+        if (res.locals.isShowInDB !== null) {
+          console.log(`res.locals.isShowInDB: `, res.locals.isShowInDB);
+          console.log('episodes in db')
+          return next();
+        };
+       
         // TO-DO: update search to be the value we receive from the search input
         const tvMazeId = res.locals.show.id;
 
@@ -38,10 +44,10 @@ const season = {
           // console.log(`season.number: `, season.number,`showId: `, showId[0].id);
 
           const result = await db.none(
-            `INSERT INTO seasons (number, show) VALUES ('${season.number}', '${showId[0].id}' )`
+            `INSERT INTO seasons (number, show, show_name) VALUES ('${season.number}', '${showId[0].id}', '${res.locals.show.name}' )`
           );
         }
-        console.log("hitting next in createSeason");
+        
         next();      
   
       } catch (err) {
