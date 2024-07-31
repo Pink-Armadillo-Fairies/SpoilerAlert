@@ -82,6 +82,43 @@ const user = {
       };
       return next(errObj);
     }
+  },
+  saveShow: async (req, res, next) => {
+    try{
+      
+      const showName = req.body.name;
+      const userId = req.cookies.ssid;
+      
+      
+      
+      const showId = await db.one (
+        `SELECT id, image FROM shows WHERE title = '${showName}'`
+      )
+  
+      console.log(`showId: `, showId);
+
+      //check if user has alredy saved show
+      const hasUserSavedShow = await db.oneOrNone('SELECT * FROM user_shows WHERE show_id = $1 AND user_id = $2', [showId.id, userId]);
+      console.log(`hasUserSavedShow :`, hasUserSavedShow)
+      if (hasUserSavedShow !== null) {
+        return res.status(200).send('you have already saved this show');
+      }
+
+      // insert a row into user_shows table
+      const result = await db.none(
+        `INSERT INTO user_shows (user_id, show_id, image) VALUES ('${userId}', '${showId.id}', '${showId.image}' )`
+        );
+
+
+      return next();
+
+    } catch (err) {
+      const errObj = {
+        log: `save show to user failed: ${err}`,
+        message: { err: 'save show to user failed, check server log for details' },
+      };
+      return next(errObj);
+  }
   }
 };
 

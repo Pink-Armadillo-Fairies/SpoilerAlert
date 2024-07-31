@@ -113,10 +113,10 @@ const show = {
       //console.log(name, image.medium, id);
       //have if clause to query db before api fetch
       const isShowInDB = await db.oneOrNone('SELECT * FROM shows WHERE title = $1', [name]);
-      console.log('is show in db', isShowInDB);
+      
+      res.locals.isShowInDB = isShowInDB;
       if (isShowInDB !== null) {
-        console.log('show exist in DB');
-        res.locals.isShowInDB = isShowInDB;
+        
         return next();
       
       }

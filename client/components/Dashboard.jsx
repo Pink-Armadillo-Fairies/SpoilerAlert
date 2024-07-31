@@ -3,6 +3,7 @@ import { Card, Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../client/styles.css";
 
+
 const Dashboard = () => {
   const [shows, setShows] = useState([]);
   const ssid = document.cookie;
