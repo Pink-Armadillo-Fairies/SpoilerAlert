@@ -212,6 +212,14 @@ const show = {
       };
       return next(errObj);
     }
+  },
+
+  savePlace: async (req, res, next) => {
+
+    const result = await db.none(
+      `INSERT INTO watch_history (show_id, season_id, episode_id, user_id) VALUES ('${name}', '${image.medium}', '${id}' )`);
+
+      return next();
   }
 
 };

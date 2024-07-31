@@ -18,11 +18,11 @@ const Show = () => {
     seasons: [],
   });
 
-  // state to store the user's watch history
-  const [watchHistory, setWatchHistory] = useState({
-    season: null,
-    episode: null,
-  });
+  // // state to store the user's watch history
+  // const [watchHistory, setWatchHistory] = useState({
+  //   season: null,
+  //   episode: null,
+  // });
   
   // state to save user's comments for selected season/episode 
   // TODO: if we allow a user to make a comment for selected season/episode in the comment box, add selected season/episode to the state
@@ -84,30 +84,69 @@ const Show = () => {
   }
 
   // function to track user inputs from comment box, and save them to 'commentInput' state 
-  const handleCommentInput = () => {
-    // 
+  const handleCommentInput = (e) => {
+    setCommentInput(e.value);
   }
   
   // function to send a POST request to save user's watch history (season/episode) to database
-  const handleSaveWatchHistory = () => {
+  const handleSaveWatchHistory = async () => {
+    try{
+      const placeData = {
+        showId: show_id,
+        seasonId: watchHistoryInput.season,
+        episodeID: watchHistoryInput.episode,
+      }
+      const response = await fetch('/saveplace', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          body: JSON.stringify({})
+        }
+      });
+      if(response.ok) {
+        // 
+      }
+
+    } catch (error){
+        console.log('Error in handlWatchSaveHistory');
+    }
 
   }
 
   // function to save a user's comment to DB by making a POST request to /xxx 
   // which is fired when a user clicks 'comment' button 
-  const handleSaveComment = (e) => {
-    console.log('handleSaveComment is invoked - save comment')
+  const handleSaveComment = async () => {
+    try {
+      const commentInfo = {
+        comment: commentInput,
+        show_id: show_id,
+        season: watchHistoryInput.season,
+        episode: watchHistoryInput.episode,
+      }
+      const response = await fetch('/xxxx', { //TODO: update the endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(commentInfo),
+      })
+
+    } catch (error) {
+      console.log('Fetch error')
+    }
+    
   }
 
   // log 'showInfo' state and first episode for test 
-  console.log('showInfo is', showInfo);
-  if (showInfo.seasonEpisode && showInfo.seasonEpisode.length > 0) {
-    console.log(showInfo.seasonEpisode[0].episode_name);
-  } else {
-    console.log('No episodes available yet');
-  }
+  // console.log('showInfo is', showInfo);
+  // if (showInfo.allEpisodeList && showInfo.allEpisodeList.length > 0) {
+  //   console.log(showInfo.allEpisodeList[0].episode_name);
+  // } else {
+  //   console.log('No episodes available yet');
+  // }
 
-  console.log('watchHistoryINput is ', watchHistoryInput)
+  console.log('watchHistoryInput state is ', watchHistoryInput)
+  console.log('commentInput state is: ', commentInput)
 
   return (
     <Container>
@@ -181,21 +220,29 @@ const Show = () => {
 
       {/* add comment box - pulldown to select season/episode to add comments */}
       <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Comment to the show:</h4>
-      <Form.Group 
-        controlId="commentBox" 
-        style={{
+      <Form onsubmit={handleSaveComment}>
+        <Form.Group 
+          controlId="commentBox" 
+          style={{
 
-        }}>
-        <Form.Control as="textarea" rows={3} value={commentInput} onChange={handleCommentInput} />
-        {/* <Button onClick={handleSaveComment}>Comment</Button> */}
-      </Form.Group>
+          }}>
+          <Form.Control as="textarea" rows={3} value={commentInput} onChange={handleCommentInput} />
+          {/* <Button onClick={handleSaveComment}>Comment</Button> */}
+        </Form.Group>
+        <Button 
+          type="submit" 
+          disabled={!commentInput}
+        >
+          Save
+        </Button>
 
+      </Form>
       {/* render Comment component */}      
-      {watchHistory.season && (
+      {watchHistoryInput.season && (
         <Comment 
           showId={show_id} 
-          season={watchHistory.season} 
-          episode={watchHistory.episode} 
+          season={watchHistoryInput.season} 
+          episode={watchHistoryInput.episode} 
         />
       )}
 
