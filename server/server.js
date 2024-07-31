@@ -11,7 +11,7 @@ const season = require('./seasonController.js');
 const episode = require('./episodeController.js');
 const session = require('./controllers/sessionController.js');
 const cookie = require('./controllers/cookieController.js');
-const comment = require('./commentController.js');
+const comment = require('./controllers/commentController.js');
 
 app.use(express.static(path.resolve(__dirname, '../build')));
 

@@ -15,7 +15,7 @@ import MainPage from './components/MainPage.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import AddShow from './components/AddShow.jsx';
 import Show from './components/Show.jsx'
-
+import Comment from './components/Comment.jsx'
 //to include bootstrap styling uncomment this line:
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
@@ -32,6 +32,7 @@ const router = createBrowserRouter([
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/addshow', element: <AddShow /> },
       { path: '/show', element: <Show /> },
+      { path: '/comments', element: <Comment /> },
     ],
   },
 ]);
