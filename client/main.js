@@ -13,6 +13,7 @@ import Signup from './components/Signup.jsx';
 import MainPage from './components/MainPage.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import AddShow from './components/AddShow.jsx';
+import Show from './components/Show.jsx'
 
 //to include bootstrap styling uncomment this line:
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -40,8 +41,11 @@ const router = createBrowserRouter(
     {path: '/addshow',
       element: <AddShow/>,
       children: [],
-    }
-
+    },
+    {path: '/show',
+      element: <Show/>,
+      children: [],
+    },
   ])
 
 

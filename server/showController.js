@@ -156,7 +156,68 @@ const show = {
       };
       return next(errObj);
     }
+  },
+
+  getShow: async (req, res, next) => {
+    try {
+      console.log('getShow middleware is called')
+  
+      // get show_id passed from query parameter 
+      const show_id = req.query.show_id;
+      console.log('show_id is ', show_id)
+
+      // declare showInfo object to store all data to be passed to client 
+      const showInfo = {}
+
+      // SQL code and parameters 
+      // TO DO: get season/episode data
+      const getShowQuery = `
+        SELECT id, title, image
+        FROM shows
+        WHERE id = $1;
+      `;
+      const getShowParam = [show_id];
+
+      // run query to get a show info - show_id, name, image, seasons/episodes.
+      const getShowResponse = await db.any(getShowQuery, getShowParam);
+      const showData = getShowResponse[0];
+
+      console.log('show Data ', showData)
+
+      // store show data to 'res.locals.showInfo' 
+      showInfo.id = showData.id;
+      showInfo.title = showData.title;
+      showInfo.image = showData.image;
+
+
+      // get season and episode 
+      // create a query to pull season and episodes for the show JOIN table
+
+      const getSeasonEpisodeQuery = `
+        SELECT number AS season_number, episode_number, episode_name
+        FROM seasons AS s
+        INNER JOIN episodes AS e ON s.id = e.season_id
+        WHERE show = $1
+      `
+      const getSeasonEpisodeParam = [show_id];
+      const getSeasonEpisodeResponse = await db.any(getSeasonEpisodeQuery, getSeasonEpisodeParam);
+      showInfo.seasonEpisode = getSeasonEpisodeResponse;
+
+      // console.log('showInfo ', showInfo);
+
+      res.locals.showInfo = showInfo;
+
+      return next();
+
+    } catch (err) {
+      const errObj = {
+        log: `getShow failed: ${err}`,
+        message: { err: 'getShow failed, check server log for details' },
+      };
+      return next(errObj);
+    }
   }
+
 };
 
 module.exports = show;
