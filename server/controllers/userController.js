@@ -85,13 +85,12 @@ const user = {
   },
   saveShow: async (req, res, next) => {
     try{
-      //const showName = "Frasier";
-      console.log(`req.body: `, req.body);
-      console.log(`req.query: `, req.query)
+      
       const showName = req.body.name;
-      const userId = req.query.ssid;
-      //const userId = '42d87ebd-65ac-4f15-8291-120c4226adee'
-      console.log(`userId: `, userId);
+      const userId = req.cookies.ssid;
+      
+      
+      
       const showId = await db.one (
         `SELECT id, image FROM shows WHERE title = '${showName}'`
       )

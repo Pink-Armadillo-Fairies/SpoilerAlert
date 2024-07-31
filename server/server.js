@@ -11,6 +11,7 @@ const season = require('./seasonController.js');
 const episode = require('./episodeController.js');
 const session = require('./controllers/sessionController.js');
 const cookie = require('./controllers/cookieController.js');
+const comment = require('/commentController.js');
 
 app.use(express.static(path.resolve(__dirname, '../build')));
 
@@ -45,7 +46,9 @@ app.post('/saveusershow', user.saveShow, (req, res) =>{
 })
 
 
-
+app.get('/getcomments', comment.getComments, (req, res) => {
+  return res.status(200).json(res.locals.comments);
+})
 
 
 
@@ -67,13 +70,13 @@ app.post('/test/:username', testMiddleware.sqlPostTest, (req, res) =>
 
 // // app.post('/users/', user.createUser, (req, res) => res.sendStatus(201)); // -> seems not necessary. to be removed. 
 
-// app.post('/users/login', user.verifyUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
-//   return res.status(200).send('Successful login');
-// })
+app.post('/users/login', user.verifyUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
+  return res.status(200).send('Successful login');
+})
 
-// app.post('/users/signup', user.createUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
-//   return res.status(200).send('Successful Signup');
-// })
+app.post('/users/signup', user.createUser, session.startSession, cookie.setSSIDCookie, (req, res) => {
+  return res.status(200).send('Successful Signup');
+})
 
 // show routes
 // app.get('/shows', show.getShows, (req, res) => {

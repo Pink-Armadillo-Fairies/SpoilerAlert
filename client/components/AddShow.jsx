@@ -73,8 +73,8 @@ const AddShow = () => {
     // prevent the page from being reloaded
     e.preventDefault(); 
     try {
-      const ssid = document.cookie;
-      const response = await fetch(`/saveusershow?${ssid}`, {
+      
+      const response = await fetch(`/saveusershow`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
