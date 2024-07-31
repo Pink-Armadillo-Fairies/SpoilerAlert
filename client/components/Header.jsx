@@ -1,17 +1,15 @@
 import React from "react";
 import '../styles.css';
 
-const Header = ({ title = 'Yo! Im the Header!'}) => {
-
+const Header = ({ title = 'Spoiler Alert!'}) => {
+    console.log('Header is rendering');
     return (
+        
     <header>
-        <h1>{ title }</h1>
+        <a href="/Dashboard"><h1>{ title }</h1></a>
     </header>
     )
 
 };
 
 export default Header;
-
-// remember to import the Header component in the file where you want to use it, import Header from './Header.jsx';
-// and then use it like this: <Header title ='Currently Watching' />

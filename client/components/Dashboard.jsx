@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../client/styles.css";
-import Header from './Header.jsx'; 
+
 
 const Dashboard = () => {
   const [shows, setShows] = useState([]);
@@ -41,7 +41,6 @@ const Dashboard = () => {
 
   return (
     <Container>
-      <Header title ='Currently Watching test Header' />
       <h1>Currently Watching</h1>
       <div className="shows-container">
         <Row>
