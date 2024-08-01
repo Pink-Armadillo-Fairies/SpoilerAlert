@@ -96,24 +96,22 @@ const Show = () => {
   }
   
   // function to send a POST request to save user's watch history (season/episode) to database
-  const handleSaveWatchHistory = async () => {
+  const handleSaveWatchHistory = async (e) => {
     e.preventDefault();
     try{
       const placeData = {
         showId: show_id,
-        seasonId: watchHistoryInput.season,
-        episodeID: watchHistoryInput.episode,
+        seasonNumber: watchHistoryInput.season,
+        episodeNumber: watchHistoryInput.episode,
       }
+      console.log('placeData ', placeData)
       const response = await fetch('/saveplace', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
-          body: JSON.stringify({})
-        }
+        },
+        body: JSON.stringify(placeData),
       });
-      if(response.ok) {
-        // 
-      }
 
     } catch (error){
         console.log('Error in handlWatchSaveHistory');
