@@ -42,7 +42,7 @@ app.get('/getshow', show.getShow, (req, res) => {
 
 // route for saving the season/episode a user is on
 
-app.post('/saveplace', show.savePlace, (req, rest) => {
+app.post('/saveplace', show.savePlace, (req, res) => {
   return res.status(200).json(res.locals.showPlace);
 })
 
