@@ -6,15 +6,25 @@ import '../../client/styles.css';
 import Comment from './Comment.jsx'
 
 const Show = () => {
-  // get show's id from query paramter 
+
+  // extract show_id from query parameter    
+  //-----------------------------------------
+
+  /* Note
+  1. get the current location object from React Router
+  2. create a URLSearchParams object from query string portion of the URL
+  3. extract the value associated with the 'id' parameter from the query string
+  */
+
   const location = useLocation(); 
-  // Use URLSearchParams to parse the query string
   const queryParams = new URLSearchParams(location.search);
   const show_id = queryParams.get('id');
 
-  // const show_id = 133; // use static number for testing
 
-  // state to save a show information 
+  // state variables   
+  //-----------------------------------------
+
+  // Show information  
   const [showInfo, setShowInfo] = useState({
     id: undefined,
     title: '',
@@ -23,22 +33,26 @@ const Show = () => {
     seasons: [],
   });
 
-  // state to store the user's watch history
+  // User's watch history
   const [watchHistory, setWatchHistory] = useState({
     season: undefined,
     episode: undefined,
   });
 
-  // state to save user's comments for selected season/episode 
-  const [commentInput, setCommentInput] = useState('');
-
-  // state to handle user inputs of watch history (season and episode) from pull-downs 
+  // User's inputs from pull-down to update watch history
   const [watchHistoryInput, setWatchHistoryInput] = useState({
     season: undefined,
     episode: undefined,
   });
 
-  // useEffect to send a GET request to /getshow API to get a show information 
+  // User's inputs from comment box 
+  const [commentInput, setCommentInput] = useState('');
+
+
+  // side effects    
+  //-----------------------------------------
+
+  // fetches show information when component mounts or show_id changes
   useEffect(()=> {
     const fetchShowData = async () => {
       try {
@@ -59,7 +73,7 @@ const Show = () => {
     fetchShowData();
   }, [show_id]); // re-fetches data if show_id changes
 
-  // useEffect to send a GET request to /xxx API to see if a user has watchHistory, and update 'watchHistoryInput' state 
+  // retrieve user's watch history for the current show when component mounts  
   useEffect(()=> {
     const fetchWatchHistory = async () => {
       try {
@@ -73,13 +87,18 @@ const Show = () => {
           });
         }
       } catch (error) {
-        console.log('Fetch error');
+        console.log('Error fetching watch history:', error);
+        // TODO: Implement user-facing error handling
       }
     };
     fetchWatchHistory();
   }, []); // call the function only once when the component mounts. 
 
-  // function to track user inputs from pull-down and update 'watchHistoryInput' state 
+
+  // event handlers
+  //-----------------------------------------
+ 
+  // update watchHistoryInput state when user selects season or episode from pull-down
   const handleWatchHistoryInput = (e, field) => {
     setWatchHistoryInput({
       ...watchHistoryInput,
@@ -87,12 +106,12 @@ const Show = () => {
     })
   }
 
-  // function to track user inputs from comment box, and save them to 'commentInput' state 
+  // update commentInput state as user types in comment box 
   const handleCommentInput = (e) => {
     setCommentInput(e.target.value);
   }
   
-  // function to send a POST request to save user's watch history (season/episode) to database
+  // save user's watch history to database and update local states
   const handleSaveWatchHistory = async (e) => {
     e.preventDefault();
     try{
@@ -110,27 +129,24 @@ const Show = () => {
         body: JSON.stringify(placeData),
       });
       if (response.ok) {
-        // update the saved watch history to 'watchHistory' state 
+        // update local watchHistory state
         setWatchHistory({
           ...watchHistory,
           season: watchHistoryInput.season,
           episode: watchHistoryInput.episode,
         })
-        // reset 'watchHistoryInput' state 
+        // reset local watchHistoryInput state  
         setWatchHistoryInput({
           season: undefined,
           episode: undefined,
         })
       }
-
     } catch (error){
-        console.log('Error in handlWatchSaveHistory');
+        console.log('Error in handleSaveWatchHistory:', error);
     }
   }
 
-  // function to save a user's comment to DB by making a POST request to /addcomment 
-  // which is fired when a user clicks 'comment' button 
-  // currently, the comment is associated with a user's watch history (season/episode) that is saved in the database 
+  // save user's comment to database for current watch history 
   const handleSaveComment = async (e) => {
     e.preventDefault(); 
     try {
@@ -147,24 +163,27 @@ const Show = () => {
         },
         body: JSON.stringify(commentInfo),
       })
-      setCommentInput('');
+      if (response.ok) {
+        // clear comment input on successful save 
+        setCommentInput('');
+      } else {
+        // TODO: Handle unsuccessful comment save
+      }
     } catch (error) {
-      console.log('Fetch error')
+      console.log('Error in handleSaveComment:', error);
     }
-    
   }
 
-  // log 'showInfo' state and first episode for test 
-  // console.log('showInfo is', showInfo);
-  // if (showInfo.allEpisodeList && showInfo.allEpisodeList.length > 0) {
-  //   console.log(showInfo.allEpisodeList[0].episode_name);
-  // } else {
-  //   console.log('No episodes available yet');
-  // }
 
+  // console logs for test 
+  //-----------------------------------------
   console.log('watchHistoryInput state is ', watchHistoryInput)
   console.log('watchHistory is: ', watchHistory);
   console.log('commentInput state is: ', commentInput)
+
+
+  // return statement 
+  //-----------------------------------------
 
   return (<Container>
     {/* guide a user to dashboard if no show is selected */}
