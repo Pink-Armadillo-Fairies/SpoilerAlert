@@ -17,7 +17,7 @@ const Comment = ({ showId, season, episode }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-       const response = await fetch(
+        const response = await fetch(
           `/getcomments?showId=${showId}`
         );
         const result = await response.json();
