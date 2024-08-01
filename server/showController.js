@@ -237,7 +237,22 @@ const show = {
         };
         return next(errObj);
     }
+  },
+
+  getWatchHistory: async (req, res, next) => {
+    console.log('getWatchHistory is hit')
+    try {
+      const userId = req.cookies.ssid;
+      console.log('userId is ', userId)
+
+      // query to get user's watch history of the show (season/episode)
+      
+
+    } catch (err) {
+
+    }
   }
+
 }; 
 
 

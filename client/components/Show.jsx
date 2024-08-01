@@ -66,7 +66,7 @@ const Show = () => {
   useEffect(()=> {
     const fetchWatchHistory = async () => {
       try {
-        const response = await fetch(`/xxx?show_id=${show_id}`); // TO DO: confirm endpoint 
+        const response = await fetch(`/getwatchhistory?show_id=${show_id}`); 
         if (response.ok) {
           const result = await response.json();
           // TODO: update property name based on API's response format 
