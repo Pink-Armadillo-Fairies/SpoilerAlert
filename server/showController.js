@@ -254,13 +254,36 @@ const show = {
     console.log('getWatchHistory is hit')
     try {
       const userId = req.cookies.ssid;
-      console.log('userId is ', userId)
+      const show_id = req.query.show_id;
+
+      console.log('userId and show_id', userId, ' ', show_id)
 
       // query to get user's watch history of the show (season/episode)
+      const getWatchHistoryQuery = `
+        SELECT show_id, season_number, episode_number, user_id
+        FROM watch_history
+        WHERE user_id = $1 AND show_id = $2
+      `
+      const getWatchHistoryParam = [userId, show_id];
+
+      const getWatchHistoryResponse = await db.one(getWatchHistoryQuery, getWatchHistoryParam);
+
+      res.locals.watchHistory = getWatchHistoryResponse;
       
+      /**
+      SELECT show_id, season_number, episode_number, user_id
+      FROM watch_history
+      WHERE user_id = '15e72508-cdee-4039-8a96-313b601b20fd' AND show_id = 145
+       */
+
+      return next();
 
     } catch (err) {
-
+      const errObj = {
+        log: `getWatchHistory failed: ${err}`,
+        message: { err: 'getWatchHistory failed, check server log for details' },
+      };
+      return next(errObj);
     }
   }
 

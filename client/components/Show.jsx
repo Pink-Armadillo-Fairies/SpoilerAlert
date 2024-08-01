@@ -16,29 +16,26 @@ const Show = () => {
 
   // state to save a show information 
   const [showInfo, setShowInfo] = useState({
-    id: null,
+    id: undefined,
     title: '',
     image: '',
     allEpisodeList: [], 
     seasons: [],
   });
 
-  /* use this 'watchHistory' state if we want to separate states to manage 'save watch history' and 'make comment'
   // state to store the user's watch history
   const [watchHistory, setWatchHistory] = useState({
-    season: null,
-    episode: null,
-  // });
-  */
+    season: undefined,
+    episode: undefined,
+  });
 
   // state to save user's comments for selected season/episode 
   const [commentInput, setCommentInput] = useState('');
 
-  // state to save user input of watch history (season and episode) from pull-downs. 
-  // this state is also reffered to 1) save user's watch history and 2) make a comment to a show
+  // state to handle user inputs of watch history (season and episode) from pull-downs 
   const [watchHistoryInput, setWatchHistoryInput] = useState({
-    season: null,
-    episode: null,
+    season: undefined,
+    episode: undefined,
   });
 
   // useEffect to send a GET request to /getshow API to get a show information 
@@ -69,12 +66,10 @@ const Show = () => {
         const response = await fetch(`/getwatchhistory?show_id=${show_id}`); 
         if (response.ok) {
           const result = await response.json();
-          // TODO: update property name based on API's response format 
-          setWatchHistoryInput({
-            ...watchHistoryInput,
-            // TODO: update season and episode 
-            // season: xx,
-            // episode: xx,
+          setWatchHistory({
+            ...watchHistory,
+            season: result.season_number,
+            episode: result.episode_number,
           });
         }
       } catch (error) {
@@ -114,24 +109,38 @@ const Show = () => {
         },
         body: JSON.stringify(placeData),
       });
+      if (response.ok) {
+        // update the saved watch history to 'watchHistory' state 
+        setWatchHistory({
+          ...watchHistory,
+          season: watchHistoryInput.season,
+          episode: watchHistoryInput.episode,
+        })
+        // reset 'watchHistoryInput' state 
+        setWatchHistoryInput({
+          season: undefined,
+          episode: undefined,
+        })
+      }
 
     } catch (error){
         console.log('Error in handlWatchSaveHistory');
     }
   }
 
-  // function to save a user's comment to DB by making a POST request to /xxx 
+  // function to save a user's comment to DB by making a POST request to /addcomment 
   // which is fired when a user clicks 'comment' button 
+  // currently, the comment is associated with a user's watch history (season/episode) that is saved in the database 
   const handleSaveComment = async (e) => {
     e.preventDefault(); 
     try {
       const commentInfo = {
         body: commentInput,
         show_id: show_id,
-        season: watchHistoryInput.season,
-        episode: watchHistoryInput.episode,
+        season: watchHistory.season,
+        episode: watchHistory.episode,
       }
-      const response = await fetch('/addcomment', { //TODO: update the endpoint
+      const response = await fetch('/addcomment', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -154,6 +163,7 @@ const Show = () => {
   // }
 
   console.log('watchHistoryInput state is ', watchHistoryInput)
+  console.log('watchHistory is: ', watchHistory);
   console.log('commentInput state is: ', commentInput)
 
   return (<Container>
@@ -244,14 +254,18 @@ const Show = () => {
           </Button>
         </Form>
   
+        {watchHistory.season && watchHistory.episode && (
+          <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '1.2rem' }}>You've watched up to season {watchHistory.season}, episode {watchHistory.episode}</p>
+        )}
+
         {/* render Comment component */}   
-        {!watchHistoryInput.season || !watchHistoryInput.episode ? (
+        {!watchHistory.season || !watchHistory.episode ? (
           <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '1.2rem' }}>Please save your watch history first to see comments.</p>
         ) : ( 
           <Comment 
           showId={show_id} 
-          season={watchHistoryInput.season} 
-          episode={watchHistoryInput.episode} 
+          season={watchHistory.season} 
+          episode={watchHistory.episode} 
           />
         )}  
       </>
