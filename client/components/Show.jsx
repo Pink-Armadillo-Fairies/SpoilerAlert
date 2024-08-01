@@ -66,15 +66,17 @@ const Show = () => {
   useEffect(()=> {
     const fetchWatchHistory = async () => {
       try {
-        const response = await fetch(`/xxx?show_id=${show_id}`); // TO DO: confirm endpoint 
-        const result = await response.json();
-        // TODO: update property name based on API's response format 
-        setWatchHistoryInput({
-          ...watchHistoryInput,
-          // TODO: update season and episode 
-          // season: '1',
-          // episode: '1',
-        }); 
+        const response = await fetch(`/getwatchhistory?show_id=${show_id}`); 
+        if (response.ok) {
+          const result = await response.json();
+          // TODO: update property name based on API's response format 
+          setWatchHistoryInput({
+            ...watchHistoryInput,
+            // TODO: update season and episode 
+            // season: xx,
+            // episode: xx,
+          });
+        }
       } catch (error) {
         console.log('Fetch error');
       }
@@ -116,12 +118,12 @@ const Show = () => {
     } catch (error){
         console.log('Error in handlWatchSaveHistory');
     }
-
   }
 
   // function to save a user's comment to DB by making a POST request to /xxx 
   // which is fired when a user clicks 'comment' button 
-  const handleSaveComment = async () => {
+  const handleSaveComment = async (e) => {
+    e.preventDefault(); 
     try {
       const commentInfo = {
         body: commentInput,
@@ -136,7 +138,7 @@ const Show = () => {
         },
         body: JSON.stringify(commentInfo),
       })
-
+      setCommentInput('');
     } catch (error) {
       console.log('Fetch error')
     }
@@ -188,7 +190,7 @@ const Show = () => {
         </div>
   
         {/* display drop-down and save a user watch history (season and episode) */}
-        <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Add your watch history:</h4>
+        <h4 style={{ paddingLeft: "10px", fontFamily: "Ubuntu Condensed"}}>Which episode have you watched up to?</h4>
         <Form onSubmit={handleSaveWatchHistory}>
           <Form.Select 
             value={watchHistoryInput.season}
@@ -224,7 +226,7 @@ const Show = () => {
             type="submit" 
             disabled={!watchHistoryInput.season || !watchHistoryInput.episode}
           >
-            Save
+            Save your watch history
           </Button>
         </Form>
   
@@ -242,14 +244,16 @@ const Show = () => {
           </Button>
         </Form>
   
-        {/* render Comment component */}      
-        {watchHistoryInput.season && (
+        {/* render Comment component */}   
+        {!watchHistoryInput.season || !watchHistoryInput.episode ? (
+          <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '1.2rem' }}>Please save your watch history first to see comments.</p>
+        ) : ( 
           <Comment 
-            showId={show_id} 
-            season={watchHistoryInput.season} 
-            episode={watchHistoryInput.episode} 
+          showId={show_id} 
+          season={watchHistoryInput.season} 
+          episode={watchHistoryInput.episode} 
           />
-        )}
+        )}  
       </>
     )}
   </Container>

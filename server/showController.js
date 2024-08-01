@@ -113,10 +113,10 @@ const show = {
       //console.log(name, image.medium, id);
       //have if clause to query db before api fetch
       const isShowInDB = await db.oneOrNone('SELECT * FROM shows WHERE title = $1', [name]);
-      
-      res.locals.isShowInDB = isShowInDB;
+      console.log('is show in db', isShowInDB);
       if (isShowInDB !== null) {
-        
+        console.log('show exist in DB');
+        res.locals.isShowInDB = isShowInDB;
         return next();
       
       }
@@ -248,7 +248,22 @@ const show = {
         };
         return next(errObj);
     }
+  },
+
+  getWatchHistory: async (req, res, next) => {
+    console.log('getWatchHistory is hit')
+    try {
+      const userId = req.cookies.ssid;
+      console.log('userId is ', userId)
+
+      // query to get user's watch history of the show (season/episode)
+      
+
+    } catch (err) {
+
+    }
   }
+
 }; 
 
 
