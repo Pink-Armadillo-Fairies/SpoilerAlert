@@ -223,7 +223,18 @@ const show = {
       console.log(`userId: `, userId);
 
       const { showId, seasonNumber, episodeNumber } = req.body;
-  
+
+      const isShowPlaceSaved = await db.oneOrNone('SELECT * FROM watch_history WHERE show_id = $1', [showId]);
+      
+      if (isShowPlaceSaved !== null) {
+        await db.none(
+          `UPDATE watch_history
+           SET season_number = $1, episode_number = $2
+           WHERE show_id = $3 AND user_id = $4`,
+          [seasonNumber, episodeNumber, showId, userId]
+      );
+        return next();
+      }
         const result = await db.none(
           `INSERT INTO watch_history (show_id, season_number, episode_number, user_id) VALUES ($1, $2, $3, $4)`,
           [showId, seasonNumber, episodeNumber, userId]  
