@@ -56,6 +56,10 @@ app.get('/getcomments', comment.getComments, (req, res) => {
   return res.status(200).json(res.locals.comments);
 })
 
+app.post('/addcomment', comment.addComment, comment.getComments, (req, res) => {
+  return res.status(200).json(res.locals.comments);
+})
+
 
 
 /* test routes for db 
