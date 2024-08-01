@@ -103,19 +103,17 @@ const Show = () => {
     try{
       const placeData = {
         showId: show_id,
-        seasonId: watchHistoryInput.season,
-        episodeID: watchHistoryInput.episode,
+        seasonNumber: watchHistoryInput.season,
+        episodeNumber: watchHistoryInput.episode,
       }
+      console.log('placeData ', placeData)
       const response = await fetch('/saveplace', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
-          body: JSON.stringify({})
-        }
+        },
+        body: JSON.stringify(placeData),
       });
-      if(response.ok) {
-        // 
-      }
 
     } catch (error){
         console.log('Error in handlWatchSaveHistory');

@@ -29,7 +29,7 @@ const show = {
   getUserSavedShows: async (req, res, next) => {
     try {
       // const user_id = req.params.user_id; // get username from request
-      const userId = req.query.ssid;
+      const userId = req.cookies.ssid;
       console.log('server side userId is', userId);
       if (!userId) {
         return next({
@@ -215,14 +215,31 @@ const show = {
   },
 
   savePlace: async (req, res, next) => {
+    try{
+      console.log(`req.body: `, req.body);
+      
+      const userId = req.cookies.ssid;
 
-    const result = await db.none(
-      `INSERT INTO watch_history (show_id, season_id, episode_id, user_id) VALUES ('${name}', '${image.medium}', '${id}' )`);
+      console.log(`userId: `, userId);
 
-      return next();
+      const { showId, seasonNumber, episodeNumber } = req.body;
+  
+        const result = await db.none(
+          `INSERT INTO watch_history (show_id, season_number, episode_number, user_id) VALUES ($1, $2, $3, $4)`,
+          [showId, seasonNumber, episodeNumber, userId]  
+      );
+        console.log("accessing next in savePlace");
+        return next();
+    } catch(err) {
+        const errObj = {
+          log: `savePlace failed: ${err}`,
+          message: { err: 'savePlace failed, check server log for details' },
+        };
+        return next(errObj);
+    }
   }
+}; 
 
-};
 
 // get season length 
 function getSeasons(episodeList) {
