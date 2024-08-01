@@ -5,13 +5,16 @@ import { Card, CardGroup, Form, Container, Button } from 'react-bootstrap';
 // NOTE: we do not currently use redux store in this component. 
 const AddShow = () => {
 
-  function getCookie(name) {
+  // extract ssid from cookie     
+  //-----------------------------------------
+
+  function getCookie (name) {
     let cookieArr = document.cookie.split(";");
-  
-    for(let i = 0; i < cookieArr.length; i++) {
+
+    for (let i = 0; i < cookieArr.length; i++) {
       let cookiePair = cookieArr[i].split("=");
   
-      if(name == cookiePair[0].trim()) {
+      if (name == cookiePair[0].trim()) {
         return decodeURIComponent(cookiePair[1]);
       }
     }
@@ -19,31 +22,41 @@ const AddShow = () => {
   }
 
   const ssid = getCookie('ssid');
-  console.log('ssid', ssid)
 
-  // state to user's input in the search bar 
+
+  // state variables 
+  //-----------------------------------------
+
+  // store user's input of search query 
   const [userInput, setUserInput] = useState({
     searchQuery: '',
   });
 
-  // variable to store a search query 
-  const query = userInput.searchQuery;
-
-  // state to store the reuslt of searching a show
+  // store the reuslt of searching a show 
   const [searchedShow, setSearchedShow] = useState({
     id: '',
     name: '',
     image: '',
   });
 
-  const handleSubmit = async (e) => {
-    // prevent the page from being reloaded
-    e.preventDefault(); 
 
-    // make a request to '/searchshows' with a search query as a query parameter
-    // currently, we expect to get 1 show as a result 
+  // event handlers  
+  //-----------------------------------------
+
+  // update userInput state when user types in a search box
+  const handleInputChange = (e) => {
+    setUserInput({
+      ...userInput,
+      searchQuery: e.target.value,
+    });
+  }
+  
+  // extract a result of searching show with user's search query 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    // Note: we currently expect to get 1 show as a fetch result 
     try {
-      const response = await fetch(`/searchshows?searchQuery=${query}`);
+      const response = await fetch(`/searchshows?searchQuery=${userInput.searchQuery}`);
       if (response.ok) {
         const result = await response.json();
         setSearchedShow({
@@ -54,26 +67,14 @@ const AddShow = () => {
         });
       }
     } catch (error) {
-      console.error("Failed to fetch shows:", error);
+      console.error("Failed to fetch show:", error);
     }
   }
   
-  // update 'userInput' state per user's input
-  const handleInputChange = (e) => {
-    setUserInput({
-      ...userInput,
-      searchQuery: e.target.value,
-    });
-  }
-
+  // save a show for user in database, and reset search box 
   const handleSaveSubmit = async (e) => {
-    // make a post request to server to save the show
-    // pass the id in searchedShow state to the API endpoint
-    
-    // prevent the page from being reloaded
     e.preventDefault(); 
     try {
-      
       const response = await fetch(`/saveusershow`, {
         method: 'POST',
         headers: {
@@ -81,11 +82,20 @@ const AddShow = () => {
         },
         body: JSON.stringify(searchedShow),
       });
+      if (response.ok) {
+        setUserInput({
+          searchQuery: '',
+        });
+      }
     }
     catch (error) {
-      // 
+      console.error("Failed to save show:", error);
     }
   }
+
+
+  // return statement   
+  //-----------------------------------------
 
   return (
     <Container>
@@ -106,7 +116,7 @@ const AddShow = () => {
             type="text" 
             placeholder='search for a TV show' 
             name="queryInput" 
-            value={query} 
+            value={userInput.searchQuery} 
             onChange={handleInputChange} 
             style={{
               flexGrow: 1, 
