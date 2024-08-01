@@ -29,7 +29,7 @@ const show = {
   getUserSavedShows: async (req, res, next) => {
     try {
       // const user_id = req.params.user_id; // get username from request
-      const userId = req.query.ssid;
+      const userId = req.cookies.ssid;
       console.log('server side userId is', userId);
       if (!userId) {
         return next({
@@ -113,10 +113,10 @@ const show = {
       //console.log(name, image.medium, id);
       //have if clause to query db before api fetch
       const isShowInDB = await db.oneOrNone('SELECT * FROM shows WHERE title = $1', [name]);
-      
-      res.locals.isShowInDB = isShowInDB;
+      console.log('is show in db', isShowInDB);
       if (isShowInDB !== null) {
-        
+        console.log('show exist in DB');
+        res.locals.isShowInDB = isShowInDB;
         return next();
       
       }
@@ -215,14 +215,57 @@ const show = {
   },
 
   savePlace: async (req, res, next) => {
+    try{
+      console.log(`req.body: `, req.body);
+      
+      const userId = req.cookies.ssid;
 
-    const result = await db.none(
-      `INSERT INTO watch_history (show_id, season_id, episode_id, user_id) VALUES ('${name}', '${image.medium}', '${id}' )`);
+      console.log(`userId: `, userId);
 
-      return next();
+      const { showId, seasonNumber, episodeNumber } = req.body;
+
+      const isShowPlaceSaved = await db.oneOrNone('SELECT * FROM watch_history WHERE show_id = $1', [showId]);
+      
+      if (isShowPlaceSaved !== null) {
+        await db.none(
+          `UPDATE watch_history
+           SET season_number = $1, episode_number = $2
+           WHERE show_id = $3 AND user_id = $4`,
+          [seasonNumber, episodeNumber, showId, userId]
+      );
+        return next();
+      }
+        const result = await db.none(
+          `INSERT INTO watch_history (show_id, season_number, episode_number, user_id) VALUES ($1, $2, $3, $4)`,
+          [showId, seasonNumber, episodeNumber, userId]  
+      );
+        console.log("accessing next in savePlace");
+        return next();
+    } catch(err) {
+        const errObj = {
+          log: `savePlace failed: ${err}`,
+          message: { err: 'savePlace failed, check server log for details' },
+        };
+        return next(errObj);
+    }
+  },
+
+  getWatchHistory: async (req, res, next) => {
+    console.log('getWatchHistory is hit')
+    try {
+      const userId = req.cookies.ssid;
+      console.log('userId is ', userId)
+
+      // query to get user's watch history of the show (season/episode)
+      
+
+    } catch (err) {
+
+    }
   }
 
-};
+}; 
+
 
 // get season length 
 function getSeasons(episodeList) {

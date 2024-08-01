@@ -46,10 +46,6 @@ const episode = {
   
         let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);
 
-        
-
-        
-        
         res.locals.episodes = data;
         
         for (const episode of data) {
