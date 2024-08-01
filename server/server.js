@@ -47,7 +47,7 @@ app.post('/saveplace', show.savePlace, (req, res) => {
 })
 
 app.get('/getwatchhistory', show.getWatchHistory, (req, res) => {
-  return res.status(200).json('test message from getwatchhistory');
+  return res.status(200).json(res.locals.watchHistory);
 })
 
 app.post('/saveusershow', user.saveShow, (req, res) =>{
