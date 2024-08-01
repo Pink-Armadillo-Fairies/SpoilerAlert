@@ -17,8 +17,8 @@ const Comment = ({ showId, season, episode }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(
-          `/getcomments`
+       const response = await fetch(
+          `/getcomments?showId=${showId}`
         );
         const result = await response.json();
         console.log(result);
@@ -35,7 +35,7 @@ const Comment = ({ showId, season, episode }) => {
       <ListGroup className="mt-3">
         {comments.map((comment, index) => (
           <ListGroup.Item key={index}>
-            <strong>{comment.user_id}:</strong> {comment.body} {comment.created_at}
+            <strong>{comment.user_id}:</strong> {comment.body} {comment.created_at} <em>{new Date(comment.created_at).toLocaleString()}</em>
           </ListGroup.Item>
         ))}
       </ListGroup>
