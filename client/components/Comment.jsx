@@ -35,7 +35,7 @@ const Comment = ({ showId, season, episode }) => {
       <ListGroup className="mt-3">
         {comments.map((comment, index) => (
           <ListGroup.Item key={index}>
-            <strong>{comment.user_id}:</strong> {comment.body} {comment.created_at}
+            <strong>{comment.user_id}:</strong> {comment.body} {comment.created_at} <em>{new Date(comment.created_at).toLocaleString()}</em>
           </ListGroup.Item>
         ))}
       </ListGroup>
