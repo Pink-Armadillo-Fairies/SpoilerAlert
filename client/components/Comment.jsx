@@ -18,7 +18,7 @@ const Comment = ({ showId, season, episode }) => {
     const fetchComments = async () => {
       try {
         const response = await fetch(
-          `/getcomments`
+          `/getcomments?showId=${showId}`
         );
         const result = await response.json();
         console.log(result);

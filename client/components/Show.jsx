@@ -131,7 +131,7 @@ const Show = () => {
         season: watchHistoryInput.season,
         episode: watchHistoryInput.episode,
       }
-      const response = await fetch('/xxxx', { //TODO: update the endpoint
+      const response = await fetch('/addcomment', { //TODO: update the endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
