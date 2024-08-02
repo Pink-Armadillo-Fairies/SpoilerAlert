@@ -224,7 +224,7 @@ const show = {
 
       const { showId, seasonNumber, episodeNumber } = req.body;
 
-      const isShowPlaceSaved = await db.oneOrNone('SELECT * FROM watch_history WHERE show_id = $1', [showId]);
+      const isShowPlaceSaved = await db.oneOrNone('SELECT * FROM watch_history WHERE show_id = $1 AND user_id = $2' , [showId, userId]);
       
       if (isShowPlaceSaved !== null) {
         await db.none(
