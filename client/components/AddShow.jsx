@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card, CardGroup, Form, Container, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
 
 // NOTE: we do not currently use redux store in this component. 
 const AddShow = () => {
@@ -22,6 +24,11 @@ const AddShow = () => {
   }
 
   const ssid = getCookie('ssid');
+
+
+  // create navigate for redirection 
+  //-----------------------------------------
+  const navigate = useNavigate();
 
 
   // state variables 
@@ -86,6 +93,7 @@ const AddShow = () => {
         setUserInput({
           searchQuery: '',
         });
+        navigate('/Dashboard');
       }
     }
     catch (error) {
