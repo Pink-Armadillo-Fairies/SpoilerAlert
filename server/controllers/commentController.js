@@ -11,7 +11,7 @@ const comment = {
           const showId = req.query.showId;
           //console.log("req.query", req.query);
           
-          const result = await db.any('SELECT user_name, show_id, body, episode_number, season_number from comments WHERE show_id = $1', [showId]);
+          const result = await db.any('SELECT user_name, show_id, body, episode_number, season_number, created_at from comments WHERE show_id = $1', [showId]);
 
           res.locals.comments = result;
           

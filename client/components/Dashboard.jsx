@@ -48,12 +48,9 @@ const Dashboard = () => {
             shows.map((show) => (
               <Col key={show.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                 <Card className="m-2">
+                <Link to={`/show?id=${show.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <Card.Img variant="top" src={show.image} alt={show.title} className="card-img-top" />
-                  <Card.Body>
-                    <Link to={`/show?id=${show.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                      <Card.Title>{show.title}</Card.Title>
-                    </Link>
-                  </Card.Body>
+                  </Link>
                 </Card>
               </Col>
             ))
