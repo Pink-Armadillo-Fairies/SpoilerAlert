@@ -177,9 +177,10 @@ const Show = () => {
 
   // console logs for test 
   //-----------------------------------------
-  console.log('watchHistoryInput state is ', watchHistoryInput)
-  console.log('watchHistory is: ', watchHistory);
-  console.log('commentInput state is: ', commentInput)
+  console.log('showInfo is ', showInfo);
+  // console.log('watchHistoryInput state is ', watchHistoryInput)
+  // console.log('watchHistory is: ', watchHistory);
+  // console.log('commentInput state is: ', commentInput)
 
 
   // return statement 
