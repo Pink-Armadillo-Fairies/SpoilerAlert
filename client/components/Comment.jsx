@@ -1,48 +1,54 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Container, Button, ListGroup } from "react-bootstrap";
 import "../../client/styles.css";
 
 const Comment = ({ showId, season, episode }) => {
-  // use effect fetch comments from db from specific show
-  // fetch comments ()
-  //  /comments/${showId}/${season}/${episode}
-  // sort comments to display the comments for the episodes up to the user has watched
-  // compare users specific point vs all comments
-  // hide comments past the point the user has watched
-
   const [comments, setComments] = useState([]); // holds the list of comments fetched from backend
-  const [seeComments, setSeeComments] = useState(false); // toggles visibility of comments?
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(
-          `/getcomments?showId=${showId}`
-        );
+        const response = await fetch(`/getcomments?showId=${showId}&season=${season}&episode=${episode}`);
         const result = await response.json();
         console.log(result);
-        setComments(result);
+        if (Array.isArray(result)) {
+          setComments(result);
+        } else {
+          console.error("Comments data is not an array:", result);
+          setComments([]);
+        }
       } catch (error) {
         console.log("Failed to fetch comments", error);
+        setComments([]);
       }
     };
+
     fetchComments();
   }, [showId, season, episode]);
 
   return (
     <Container>
-      <ListGroup className="mt-3">
-        {comments.map((comment, index) => (
-          <ListGroup.Item key={index}>
-            <strong>{comment.user_id}:</strong> {comment.body} {comment.created_at} <em>{new Date(comment.created_at).toLocaleString()}</em>
-          </ListGroup.Item>
-        ))}
+      <ListGroup className="comment-list mt-3">
+        {comments.length > 0 ? (
+          comments.map((comment, index) => (
+            <ListGroup.Item key={index} className="comment-item">
+              <div className="comment-header">
+                <strong>{comment.user_name}</strong> {new Date(comment.created_at).toLocaleString()}
+              </div>
+              <div className="comment-body">{comment.body}</div>
+              <div className="comment-footer">
+                Season: {comment.season_number} | Episode: {comment.episode_number}
+              </div>
+            </ListGroup.Item>
+          ))
+        ) : (
+          <p>No comments found</p>
+        )}
       </ListGroup>
     </Container>
   );
 };
 
-export default Comment;
 
+export default Comment;
 
