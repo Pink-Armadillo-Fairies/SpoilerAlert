@@ -3,14 +3,18 @@ import { Form, Container, Button, ListGroup } from "react-bootstrap";
 import "../../client/styles.css";
 
 const Comment = ({ showId, season, episode }) => {
-  const [comments, setComments] = useState([]); // holds the list of comments fetched from backend
 
+  // state to save all comments for the show 
+  const [comments, setComments] = useState([]); 
+
+
+  // retrieve all comments for the show and save them to 'comments' state  
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await fetch(`/getcomments?showId=${showId}&season=${season}&episode=${episode}`);
+        const response = await fetch(`/getcomments?showId=${showId}`);
         const result = await response.json();
-        console.log(result);
+        console.log('fetched result is', result);
         if (Array.isArray(result)) {
           setComments(result);
         } else {
@@ -26,19 +30,40 @@ const Comment = ({ showId, season, episode }) => {
     fetchComments();
   }, [showId, season, episode]);
 
+
+  // console.log for test 
+  console.log('current season for user is', season);
+  console.log('current episode for user is', episode);
+  
+
+  // function to check if each comment is spoilor (True = spoilor, False = not a spoilor) u
+  const isSpoiler = (commentSeason, commentEpisode) => {
+    if (commentSeason > season) return true; // if user watch history's season > comment's season, return true (spoilor) 
+    if (commentSeason === season && commentEpisode > episode) return true; // if user watch history's season and comment season are the same, we need to compare the episodes  
+    return false; 
+  }
+  
   return (
     <Container>
       <ListGroup className="comment-list mt-3">
         {comments.length > 0 ? (
           comments.map((comment, index) => (
             <ListGroup.Item key={index} className="comment-item">
-              <div className="comment-header">
-                <strong>{comment.user_name}</strong> {new Date(comment.created_at).toLocaleString()}
-              </div>
-              <div className="comment-body">{comment.body}</div>
-              <div className="comment-footer">
-                Season: {comment.season_number} | Episode: {comment.episode_number}
-              </div>
+              {isSpoiler(comment.season_number, comment.episode_number) ? (
+                <div className="spoiler-alert">
+                  <strong>Spoiler Alert!</strong>
+                </div>
+              ) : (
+                <>
+                  <div className="comment-header">
+                    <strong>{comment.user_name}</strong> <span className="comment-date">{new Date(comment.created_at).toLocaleString()}</span>
+                  </div>
+                  <div className="comment-body">{comment.body}</div>
+                  <div className="comment-footer">
+                    Season: {comment.season_number} | Episode: {comment.episode_number}
+                  </div>
+                </>
+              )}
             </ListGroup.Item>
           ))
         ) : (
@@ -48,7 +73,6 @@ const Comment = ({ showId, season, episode }) => {
     </Container>
   );
 };
-
 
 export default Comment;
 
