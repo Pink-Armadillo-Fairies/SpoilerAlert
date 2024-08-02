@@ -16,6 +16,7 @@ const season = {
   },
 
   createSeason: async (req, res, next) => {
+      console.log('createSeasons is hit')
       try {
         if (res.locals.isShowInDB !== null) {
           console.log(`res.locals.isShowInDB: `, res.locals.isShowInDB);
@@ -26,10 +27,16 @@ const season = {
         // TO-DO: update search to be the value we receive from the search input
         const tvMazeId = res.locals.show.id;
 
+        console.log('tvMazeId is ', tvMazeId)
+
         // fetching the seasons based on tvMazeId
         const response = await fetch(`https://api.tvmaze.com/shows/${tvMazeId}/seasons`);
-  
+        
+        console.log('response in createSeason middleware to get seasons from API is ', response);
+
         let data = await response.json();
+
+        console.log('data variable in createSeason middleware is ', data)
 
         // getting the primary key id from shows table based on finding a match for tvMazeId
         let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);

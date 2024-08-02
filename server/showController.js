@@ -114,11 +114,10 @@ const show = {
       //have if clause to query db before api fetch
       const isShowInDB = await db.oneOrNone('SELECT * FROM shows WHERE title = $1', [name]);
       console.log('is show in db', isShowInDB);
+      res.locals.isShowInDB = isShowInDB;
       if (isShowInDB !== null) {
-        console.log('show exist in DB');
-        res.locals.isShowInDB = isShowInDB;
+        console.log('show exist in DB. we dont insert');
         return next();
-      
       }
     
     const result = await db.none(
@@ -140,8 +139,9 @@ const show = {
 
       // const searchInput = 'mandolorian';
       const searchInput = req.query.searchQuery;
+      console.log('serachInput is ', searchInput)
       const response = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${searchInput}`);
-      //console.log('response', response);
+      console.log('response', response);
 
       let data = await response.json();
 
