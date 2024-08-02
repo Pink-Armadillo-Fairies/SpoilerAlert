@@ -16,7 +16,14 @@ const Comment = ({ showId, season, episode }) => {
         const result = await response.json();
         console.log('fetched result is', result);
         if (Array.isArray(result)) {
-          setComments(result);
+          // Sort the comments by season and episode
+          const sortedComments = result.sort((a, b) => {
+            if (a.season_number !== b.season_number) {
+              return a.season_number - b.season_number;
+            }
+            return a.episode_number - b.episode_number;
+          });
+          setComments(sortedComments);
         } else {
           console.error("Comments data is not an array:", result);
           setComments([]);
@@ -36,10 +43,10 @@ const Comment = ({ showId, season, episode }) => {
   console.log('current episode for user is', episode);
   
 
-  // function to check if each comment is spoilor (True = spoilor, False = not a spoilor) u
+  // function to check if each comment is spoiler (True = spoiler, False = not a spoiler) u
   const isSpoiler = (commentSeason, commentEpisode) => {
     if (commentSeason > season) return true; // if user watch history's season > comment's season, return true (spoilor) 
-    if (commentSeason === season && commentEpisode > episode) return true; // if user watch history's season and comment season are the same, we need to compare the episodes  
+    if (commentSeason === season && commentEpisode > episode) return true; // if user watch history's season and comment season are the same, episodes > comment's episode, return true(spoiler)
     return false; 
   }
   
