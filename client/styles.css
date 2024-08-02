@@ -101,5 +101,12 @@ h1 {
     color: #555;
   }
   
-  
+  .spoiler-alert {
+    background-color: #ffcccb;
+    color: #a94442;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+  } 
   
