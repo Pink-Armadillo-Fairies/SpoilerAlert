@@ -18,7 +18,7 @@ import Show from './components/Show.jsx'
 import Comment from './components/Comment.jsx'
 //to include bootstrap styling uncomment this line:
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-
+import './styles.css';
 
 
 const router = createBrowserRouter([
