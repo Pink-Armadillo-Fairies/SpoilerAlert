@@ -134,11 +134,12 @@ const Show = () => {
           ...watchHistory,
           season: watchHistoryInput.season,
           episode: watchHistoryInput.episode,
-        })
+        });
         // reset local watchHistoryInput state  
         setWatchHistoryInput({
-          season: undefined,
-          episode: undefined,
+          ...watchHistoryInput, 
+          season: '',
+          episode: '',
         })
       }
     } catch (error){
@@ -177,9 +178,9 @@ const Show = () => {
 
   // console logs for test 
   //-----------------------------------------
-  console.log('showInfo is ', showInfo);
-  // console.log('watchHistoryInput state is ', watchHistoryInput)
-  // console.log('watchHistory is: ', watchHistory);
+  // console.log('showInfo is ', showInfo);
+  console.log('watchHistoryInput state is ', watchHistoryInput)
+  console.log('watchHistory is: ', watchHistory);
   // console.log('commentInput state is: ', commentInput)
 
 
@@ -236,10 +237,10 @@ const Show = () => {
           </Form.Select>
           {watchHistoryInput.season && (
             <Form.Select 
-            value={watchHistoryInput.episode}
-            onChange={(e) => handleWatchHistoryInput(e, 'episode')}
-            style={{ marginBottom: '10px' }}
-          >
+              value={watchHistoryInput.episode}
+              onChange={(e) => handleWatchHistoryInput(e, 'episode')}
+              style={{ marginBottom: '10px' }}
+            >
             <option value="">Select Episode</option>
             {showInfo.allEpisodeList
               .filter(episode => episode.season_number === watchHistoryInput.season)
