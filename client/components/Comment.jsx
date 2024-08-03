@@ -14,7 +14,7 @@ const Comment = ({ showId, season, episode }) => {
       try {
         const response = await fetch(`/getcomments?showId=${showId}`);
         const result = await response.json();
-        console.log('fetched result is', result);
+        // console.log('fetched result is', result);
         if (Array.isArray(result)) {
           // Sort the comments by season and episode
           const sortedComments = result.sort((a, b) => {
@@ -39,8 +39,8 @@ const Comment = ({ showId, season, episode }) => {
 
 
   // console.log for test 
-  console.log('current season for user is', season);
-  console.log('current episode for user is', episode);
+  // console.log('current season for user is', season);
+  // console.log('current episode for user is', episode);
   
 
   // function to check if each comment is spoiler (True = spoiler, False = not a spoiler) u
