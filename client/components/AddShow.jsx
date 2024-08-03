@@ -149,7 +149,15 @@ const AddShow = () => {
       }}>
         {searchedShow.name && (
           <Card style={{ width: '18rem' }}>
-          <Card.Img variant="top" src={searchedShow.image} />
+          <Card.Img 
+          variant="top" 
+          src={searchedShow.image}
+          style={{ 
+            width: '100%', 
+            height: 'auto', 
+            objectFit: 'cover'
+          }} 
+          />
           <Card.Body style={{
             display: 'flex',
             flexDirection: 'column',
