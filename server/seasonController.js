@@ -16,21 +16,55 @@ const season = {
   },
 
   createSeason: async (req, res, next) => {
-    try {
-      const number = req.body.number;
-      const show = req.body.show;
-      const result = await db.none(
-        `INSERT INTO seasons (number, show) VALUES ('${number}', '${show}')`
-      );
-      return next();
-    } catch (err) {
-      const errObj = {
-        log: `create season failed: ${err}`,
-        message: { err: 'create season failed, check server log for details' },
-      };
-      return next(errObj);
+      console.log('createSeasons is hit')
+      try {
+        if (res.locals.isShowInDB !== null) {
+          console.log(`res.locals.isShowInDB: `, res.locals.isShowInDB);
+          console.log('episodes in db')
+          return next();
+        };
+       
+        // TO-DO: update search to be the value we receive from the search input
+        const tvMazeId = res.locals.show.id;
+
+        console.log('tvMazeId is ', tvMazeId)
+
+        // fetching the seasons based on tvMazeId
+        const response = await fetch(`https://api.tvmaze.com/shows/${tvMazeId}/seasons`);
+        
+        console.log('response in createSeason middleware to get seasons from API is ', response);
+
+        let data = await response.json();
+
+        console.log('data variable in createSeason middleware is ', data)
+
+        // getting the primary key id from shows table based on finding a match for tvMazeId
+        let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);
+       
+        
+        res.locals.seasons = data;
+
+        // Loop through seasons, create a row for each one
+        
+        for (const season of data) {
+
+          // console.log(`season.number: `, season.number,`showId: `, showId[0].id);
+
+          const result = await db.none(
+            `INSERT INTO seasons (number, show, show_name) VALUES ('${season.number}', '${showId[0].id}', '${res.locals.show.name}' )`
+          );
+        }
+        
+        next();      
+  
+      } catch (err) {
+        const errObj = {
+          log: `create season failed: ${err}`,
+          message: { err: 'search show failed, check server log for details' },
+        };
+        return next(errObj);
+      }
     }
-  },
-};
+  };
 
 module.exports = season;

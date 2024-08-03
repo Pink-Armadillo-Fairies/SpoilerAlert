@@ -7,6 +7,7 @@ import { Form, Container, Button, Alert } from 'react-bootstrap';
 import '../../client/styles.css';
 
 const LoginForm = () => {
+  
   const [loginInput, updateLoginEntered] = useState({
     usernameInput: '',
     passwordInput: '',
@@ -36,7 +37,7 @@ const LoginForm = () => {
       });
       if (response.ok) {
         dispatch(successfulLogin(loginInput.usernameInput));
-        navigate('/mainpage');
+        navigate('/dashboard');
       } else {
         dispatch(failedLogin(loginInput.usernameInput));
         console.error('Login failed');

@@ -4,6 +4,13 @@ const { escape } = require('sqlstring');
 const episode = {
   getEpisodes: async (req, res, next) => {
     try {
+
+      if (res.locals.isShowInDB !== null) {
+        
+        return next();
+      };
+
+
       const result = await db.any('select * from "episodes"');
       res.locals.result = result;
       return next();
@@ -16,23 +23,66 @@ const episode = {
     }
   },
 
-  createEpisode: async (req, res, next) => {
-    try {
-      const number = req.body.number;
-      const title = req.body.title;
-      const seasonID = req.body.seasonID;
-      const result = await db.none(
-        `INSERT INTO episodes (number, title, season) VALUES ('${number}', '${title}', '${seasonID}')`
-      );
-      return next();
-    } catch (err) {
-      const errObj = {
-        log: `create episode failed: ${err}`,
-        message: { err: 'create episode failed, check server log for details' },
-      };
-      return next(errObj);
-    }
-  },
+
+  // TO-DO : improve performance so we insert all rows at once instead of in a for loop
+  
+  createEpisodes: async (req, res, next) => {
+      try {
+
+        if (res.locals.isShowInDB !== null) {
+          
+          return next();
+        };
+
+        // TO-DO: update search to be the value we receive from the search input
+        const tvMazeId = res.locals.show.id;
+  
+        // fetching the seasons based on tvMazeId
+        const response = await fetch(`https://api.tvmaze.com/shows/${tvMazeId}/episodes`);
+
+        
+  
+        let data = await response.json();
+  
+        let showId = await db.any(`SELECT id FROM shows WHERE tvmaze_id = '${tvMazeId}'`);
+
+        res.locals.episodes = data;
+        
+        for (const episode of data) {
+
+          //gets season id for current episode in loop if episode number is 1 to limit db calls, figure out way to limit db queries between loops
+          // if (episode.number == 1) {
+          // };
+            //console.log('episode.number', episode.number)
+            
+            let seasonId = await db.one(
+              `SELECT s.id
+              FROM seasons s
+              JOIN shows sh ON s.show = sh.id
+              WHERE sh.id= ${showId[0].id} AND s.number = ${episode.season}`);
+              
+              //console.log(`seasonId: `, seasonId);
+  
+          //console.log(`episode.name: `, episode.name,`episode.number: `, episode.number);
+          
+            //console.log(`seasonId.id: `, seasonId.id);
+          //inserts episode into episode table with correct season id
+          const result = await db.none(
+            `INSERT INTO episodes (episode_name, episode_number, season_id, show_name) VALUES ($1, $2, $3, $4)`,
+            [episode.name, episode.number, seasonId.id, res.locals.show.name]
+          );
+        }
+      
+        next();      
+  
+      } catch (err) {
+        const errObj = {
+          log: `create episodes failed: ${err}`,
+          message: { err: 'create episodes failed, check server log for details' },
+        };
+        return next(errObj);
+      }
+    },
 
   saveView: async (req, res, next) => {
     try {
